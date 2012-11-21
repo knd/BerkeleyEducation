@@ -1,7 +1,7 @@
 Nachos - Build A Thread System
 =============================
 
-![nachos]()
+![nachos](https://github.com/knd/BerkeleyEducation/raw/master/CS162/proj1/nachos.jpeg)
 
 Project Specification
 ---
