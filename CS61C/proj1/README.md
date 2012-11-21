@@ -1,7 +1,7 @@
 Small World Experience with MapReduce
 =====================================
 
-![sixdegrees]()
+![sixdegrees](https://github.com/knd/BerkeleyEducation/raw/master/CS61C/proj1/sixdegrees.png)
 
 Project Specification
 ---
