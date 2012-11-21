@@ -1,7 +1,7 @@
 Ants Vs. SomeBees
 =================
 
-![antsVsBees]()
+![antsVsBees](https://github.com/knd/BerkeleyEducation/raw/master/CS61A/proj3/img/ants_vs_bees.png)
 
 Project Specification
 -----
