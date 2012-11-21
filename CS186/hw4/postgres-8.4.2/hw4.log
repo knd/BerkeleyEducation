@@ -1,0 +1,230 @@
+LOG:  using buffer replacement policy: clock
+LOG:  database system was shut down at 2012-10-24 18:17:44 PDT
+LOG:  database system is ready to accept connections
+LOG:  autovacuum launcher started
+LOG:  could not bind IPv4 socket: Address already in use
+HINT:  Is another postmaster already running on port 11111? If not, wait a few seconds and retry.
+WARNING:  could not create listen socket for "localhost"
+FATAL:  could not create any TCP/IP sockets
+LOG:  could not bind IPv4 socket: Address already in use
+HINT:  Is another postmaster already running on port 11111? If not, wait a few seconds and retry.
+WARNING:  could not create listen socket for "localhost"
+FATAL:  could not create any TCP/IP sockets
+LOG:  using buffer replacement policy: clock
+LOG:  database system was shut down at 2012-10-29 13:16:28 PDT
+LOG:  database system is ready to accept connections
+LOG:  autovacuum launcher started
+ERROR:  could not open file "$HOME/fa12/hw4/usnews.data" for reading: No such file or directory
+STATEMENT:  copy rankings from '$HOME/fa12/hw4/usnews.data' delimiters ',' with NULL '*';
+ERROR:  could not open file "$HOME/fa12/hw4/aaup.data" for reading: No such file or directory
+STATEMENT:  copy financials from '$HOME/fa12/hw4/aaup.data' delimiters ',' with NULL '*';
+ERROR:  could not open file "$HOME/fa12/hw4/students.dat" for reading: No such file or directory
+STATEMENT:  copy students from '$HOME/fa12/hw4/students.dat' delimiters ',';
+ERROR:  relation "rankings" already exists
+STATEMENT:  create table rankings (id int primary key, name varchar(256), state varchar(10), public int, mathSAT int, verbalSAT int, combinedSAT int, ACT int, firstQMathSAT int, thirdQMathSAT int, firstQVerbalSAT int, thirdQVerbalSAT int, firstQACT int, thirdQACT int, applications int, accepted int, enrolled int, PercentInTop10PercentofHS float, PercentInTop25PercentofHS float, fulltimeUndergrads int, parttimeUndergrads int, instateTuition int, outofstateTuition int, roomAndBoardCosts int, RoomCosts int, BoardCosts int, additionalFees int, bookCosts int, personalSpending int, PctFacultyWithPhD float, PctFacultyWithTerminalDeg float, StudentFacultyRatio float, PctAlumniWhoDonate float, InstructionalSpendingPerStudent float, GradRate float);
+ERROR:  relation "financials" already exists
+STATEMENT:  create table financials (id int primary key, name varchar(256), state varchar(10), type varchar(10), fullprofsalary float, associateprofsalary float, assistantprofsalary float, aveSalary float, fullprofcompensation float, associateprofcompensation float, assistantprofcompensation float, avecompensation float, numFullProf int, numAssociateProf int, numAssistantProf int, numInstructors int, numFaculty int);
+ERROR:  relation "students" already exists
+STATEMENT:  create table students (id int primary key, name varchar(256), school int);
+ERROR:  could not open file "$HOME/fa12/hw4/usnews.data" for reading: No such file or directory
+STATEMENT:  copy rankings from '$HOME/fa12/hw4/usnews.data' delimiters ',' with NULL '*';
+ERROR:  could not open file "$HOME/fa12/hw4/aaup.data" for reading: No such file or directory
+STATEMENT:  copy financials from '$HOME/fa12/hw4/aaup.data' delimiters ',' with NULL '*';
+ERROR:  could not open file "$HOME/fa12/hw4/students.dat" for reading: No such file or directory
+STATEMENT:  copy students from '$HOME/fa12/hw4/students.dat' delimiters ',';
+ERROR:  relation "gradrate_idx" already exists
+STATEMENT:  create index gradrate_idx on rankings(gradrate);
+ERROR:  relation "rankings" already exists
+STATEMENT:  create table rankings (id int primary key, name varchar(256), state varchar(10), public int, mathSAT int, verbalSAT int, combinedSAT int, ACT int, firstQMathSAT int, thirdQMathSAT int, firstQVerbalSAT int, thirdQVerbalSAT int, firstQACT int, thirdQACT int, applications int, accepted int, enrolled int, PercentInTop10PercentofHS float, PercentInTop25PercentofHS float, fulltimeUndergrads int, parttimeUndergrads int, instateTuition int, outofstateTuition int, roomAndBoardCosts int, RoomCosts int, BoardCosts int, additionalFees int, bookCosts int, personalSpending int, PctFacultyWithPhD float, PctFacultyWithTerminalDeg float, StudentFacultyRatio float, PctAlumniWhoDonate float, InstructionalSpendingPerStudent float, GradRate float);
+ERROR:  relation "financials" already exists
+STATEMENT:  create table financials (id int primary key, name varchar(256), state varchar(10), type varchar(10), fullprofsalary float, associateprofsalary float, assistantprofsalary float, aveSalary float, fullprofcompensation float, associateprofcompensation float, assistantprofcompensation float, avecompensation float, numFullProf int, numAssociateProf int, numAssistantProf int, numInstructors int, numFaculty int);
+ERROR:  relation "students" already exists
+STATEMENT:  create table students (id int primary key, name varchar(256), school int);
+ERROR:  could not open file "/home/knd/hw4/aaup.data" for reading: No such file or directory
+STATEMENT:  copy financials from '/home/knd/hw4/aaup.data' delimiters ',' with NULL '*';
+ERROR:  relation "gradrate_idx" already exists
+STATEMENT:  create index gradrate_idx on rankings(gradrate);
+ERROR:  relation "rankings" already exists
+STATEMENT:  create table rankings (id int primary key, name varchar(256), state varchar(10), public int, mathSAT int, verbalSAT int, combinedSAT int, ACT int, firstQMathSAT int, thirdQMathSAT int, firstQVerbalSAT int, thirdQVerbalSAT int, firstQACT int, thirdQACT int, applications int, accepted int, enrolled int, PercentInTop10PercentofHS float, PercentInTop25PercentofHS float, fulltimeUndergrads int, parttimeUndergrads int, instateTuition int, outofstateTuition int, roomAndBoardCosts int, RoomCosts int, BoardCosts int, additionalFees int, bookCosts int, personalSpending int, PctFacultyWithPhD float, PctFacultyWithTerminalDeg float, StudentFacultyRatio float, PctAlumniWhoDonate float, InstructionalSpendingPerStudent float, GradRate float);
+ERROR:  relation "financials" already exists
+STATEMENT:  create table financials (id int primary key, name varchar(256), state varchar(10), type varchar(10), fullprofsalary float, associateprofsalary float, assistantprofsalary float, aveSalary float, fullprofcompensation float, associateprofcompensation float, assistantprofcompensation float, avecompensation float, numFullProf int, numAssociateProf int, numAssistantProf int, numInstructors int, numFaculty int);
+ERROR:  relation "students" already exists
+STATEMENT:  create table students (id int primary key, name varchar(256), school int);
+ERROR:  duplicate key value violates unique constraint "rankings_pkey"
+CONTEXT:  COPY rankings, line 1: "1002,Alabama Agri. & Mech. Univ.,AL,1,*,*,*,17,*,*,*,*,14,17,2817,1920,984,*,*,3958,305,1700,3400,25..."
+STATEMENT:  copy rankings from '/home/knd/fa12/hw4/usnews.data' delimiters ',' with NULL '*';
+ERROR:  duplicate key value violates unique constraint "students_pkey"
+CONTEXT:  COPY students, line 1: "1,Janet Gaynor,3537"
+STATEMENT:  copy students from '/home/knd/fa12/hw4/students.dat' delimiters ',';
+ERROR:  relation "gradrate_idx" already exists
+STATEMENT:  create index gradrate_idx on rankings(gradrate);
+FATAL:  could not open file "global/pg_database": No such file or directory
+LOG:  autovacuum launcher process (PID 9579) exited with exit code 1
+LOG:  terminating any other active server processes
+LOG:  could not open temporary statistics file "global/pgstat.tmp": No such file or directory
+LOG:  all server processes terminated; reinitializing
+LOG:  could not open file "postmaster.pid": No such file or directory
+FATAL:  could not stat data directory "/home/knd/pgsql/data": No such file or directory
+LOG:  using buffer replacement policy: clock
+LOG:  database system was shut down at 2012-10-29 13:30:53 PDT
+LOG:  database system is ready to accept connections
+LOG:  autovacuum launcher started
+ERROR:  syntax error at or near "System" at character 1
+STATEMENT:  System catalogs;
+ERROR:  syntax error at or near "System" at character 1
+STATEMENT:  System catalogs;
+ERROR:  column "relname" does not exist at character 30
+STATEMENT:  SELECT * FROM pg_index WHERE relname='Rankings'
+	;
+ERROR:  column pg_index.relname does not exist at character 30
+STATEMENT:  SELECT * FROM pg_index WHERE pg_index.relname='Rankings';
+ERROR:  column pg_index.relname does not exist at character 30
+STATEMENT:  SELECT * FROM pg_index WHERE pg_index.relname like 'Rankings';
+ERROR:  column pg_index.relname does not exist at character 30
+STATEMENT:  SELECT * FROM pg_index WHERE pg_index.relname like 'Rankings%';
+ERROR:  syntax error at or near "FROM" at character 98
+STATEMENT:  SELECT t.relanme as table_name,
+	       i.relname as index_name,
+	       a.attname as columm_name,
+	FROM 
+	       pg_class t,
+	       pg_class i,
+	       pg_index ix,
+	       pg_attribute a
+	WHERE t.oid = ix.indrelid
+	AND   i.oid = ix.indexrelid
+	AND   a.attrelid = t.oid
+	AND   a.attnum = ANY(ix.indkey)
+	AND   t.relkind = 'r'
+	AND   t.relname = 'Rankings'
+	ORDER BY
+	      t.relname,
+	      i.relname;
+ERROR:  column "relname" does not exist at character 8
+STATEMENT:  SELECT relname FROM pg_indexes WHERE relname='rankings';
+ERROR:  column "less" does not exist at character 62
+STATEMENT:  SELECT n_distinct FROM pg_stats WHERE tablename='rankings' | less;
+ERROR:  subquery in FROM must have an alias at character 26
+HINT:  For example, FROM (SELECT ...) [AS] foo.
+STATEMENT:  SELECT COUNT(state) FROM ( SELECT DISTINCT state FROM rankings);
+ERROR:  syntax error at or near "table" at character 67
+STATEMENT:  SELECT COUNT(state) FROM (SELECT DISTINCT state FROM rankings) AS table;
+ERROR:  syntax error at or near "table" at character 66
+STATEMENT:  SELECT COUNT(state) FROM (SELECT DISTINCT state FROM rankings AS table);
+ERROR:  syntax error at or near "DISTINCT" at character 9
+STATEMENT:  SELECT (DISTINCT state) FROM rankings;
+ERROR:  syntax error at or near "*" at character 23
+STATEMENT:  SELECT COUNT(DISTINCT *) FROM rankings WHERE state='NY';
+ERROR:  syntax error at or near "DESC" at character 68
+STATEMENT:  SELECT name, COUNT(*) FROM rankings WHERE state='NY' GROUP BY name DESC;
+ERROR:  column "decs" does not exist at character 77
+STATEMENT:  SELECT name, COUNT(*) FROM rankings WHERE state='NY' GROUP BY name ORDER BY DECS;
+ERROR:  column "rankings.state" must appear in the GROUP BY clause or be used in an aggregate function at character 8
+STATEMENT:  SELECT state, COUNT(DISTINCT name) AS countname FROM rankings GROUP BY name ORDER BY countname DESC;
+ERROR:  syntax error at or near "rankings" at character 31
+STATEMENT:  CREATE UNIQUE INDEX state_idx rankings (state);
+ERROR:  could not create unique index "state_idx"
+DETAIL:  Table contains duplicated values.
+STATEMENT:  CREATE UNIQUE INDEX state_idx ON rankings (state);
+ERROR:  canceling statement due to user request
+STATEMENT:  SELECT R.name, F.avesalary 
+	FROM rankings R, financials F
+	;
+ERROR:  index "studentfacultyratio_id" does not exist
+STATEMENT:  DROP INDEX studentfacultyratio_id;
+ERROR:  relation "schools" does not exist at character 22
+STATEMENT:  SELECT COUNT(*) FROM schools;
+ERROR:  missing FROM-clause entry for table "f" at character 20
+STATEMENT:  SELECT R.name, max(F.avesalary) FROM rankings R, financials WHERE R.id=F.id;
+ERROR:  column "id" does not exist at character 8
+STATEMENT:  SELECT id, name WHERE rankings.id=1002;
+ERROR:  column "financials.id" must appear in the GROUP BY clause or be used in an aggregate function at character 8
+STATEMENT:  SELECT id, name, MAX(avesalary) FROM financials;
+ERROR:  column "financials.name" must appear in the GROUP BY clause or be used in an aggregate function at character 12
+STATEMENT:  SELECT id, name, MAX(avesalary) FROM financials GROUP BY id;
+ERROR:  column "financials.id" must appear in the GROUP BY clause or be used in an aggregate function at character 8
+STATEMENT:  SELECT id, name, MAX(avesalary) FROM financials GROUP BY name;
+ERROR:  missing FROM-clause entry for table "r" at character 8
+STATEMENT:  SELECT R.name, F.avesalary WHERE R.id=F.id AND R.public=1;
+ERROR:  subquery in FROM must have an alias at character 28
+HINT:  For example, FROM (SELECT ...) [AS] foo.
+STATEMENT:  SELECT MAX(avesalary) FROM (SELECT R.name, F.avesalary FROM rankings R, financials f WHERE R.id=F.id AND R.public=1);
+ERROR:  column "foo.name" must appear in the GROUP BY clause or be used in an aggregate function at character 8
+STATEMENT:  SELECT name, MAX(avesalary) FROM (SELECT R.name, F.avesalary FROM rankings R, financials f WHERE R.id=F.id AND R.public=1) AS foo;
+ERROR:  column "financials.name" must appear in the GROUP BY clause or be used in an aggregate function at character 8
+STATEMENT:  SELECT name, MAX(avesalary) AS ola FROM financials;
+ERROR:  relation "foo2" does not exist at character 194
+STATEMENT:  SELECT * FROM (SELECT name, avesalary FROM (SELECT R.name, F.avesalary FROM rankings R, financials f WHERE R.id=F.id AND R.public=1) AS foo) AS foo2 WHERE avesalary=(SELECT MAX(avesalary) FROM foo2);
+ERROR:  syntax error at or near "AS" at character 200
+STATEMENT:  SELECT * FROM (SELECT name, avesalary FROM (SELECT R.name, F.avesalary FROM rankings R, financials f WHERE R.id=F.id AND R.public=1) AS foo) AS foo2 WHERE avesalary=(SELECT MAX(avesalary) FROM foo2) AS foo3;
+ERROR:  relation "foo2" does not exist at character 194
+STATEMENT:  SELECT * FROM (SELECT name, avesalary FROM (SELECT R.name, F.avesalary FROM rankings R, financials f WHERE R.id=F.id AND R.public=1) AS foo) AS foo2 WHERE avesalary=(SELECT MAX(avesalary) FROM foo2);
+ERROR:  relation "foo2" does not exist at character 194
+STATEMENT:  SELECT * FROM (SELECT name, avesalary FROM (SELECT R.name, F.avesalary FROM rankings R, financials f WHERE R.id=F.id AND R.public=1) AS foo) AS foo2 WHERE avesalary=(SELECT MAX(avesalary) FROM foo2);
+ERROR:  syntax error at or near "R" at character 25
+STATEMENT:  SELECT * WHERE rankings R, financials F WHERE R.id=F.id AND R.public=1;
+ERROR:  relation "f" does not exist at character 86
+STATEMENT:  SELECT * FROM rankings R, financials F WHERE avesalary=(SELECT MAX(F.avesalary) FROM F) AND R.public=1 AND F.id=R.id;
+ERROR:  column reference "name" is ambiguous at character 8
+STATEMENT:  SELECT name, avesalary FROM rankings R, financials F WHERE R.public=1 AND F.id=R.id;
+ERROR:  column "r.name" must appear in the GROUP BY clause or be used in an aggregate function at character 8
+STATEMENT:  SELECT R.name, MAX(F.avesalary) FROM rankings R, financials F WHERE R.public=1 AND F.id=R.id;
+ERROR:  syntax error at or near "(" at character 20
+STATEMENT:  SELECT r.name COUNT(*) FROM rankings r, students s WHERE r.id=s.school;
+ERROR:  syntax error at or near "(" at character 20
+STATEMENT:  SELECT r.name COUNT(*) FROM rankings r, students s WHERE r.id=s.school GROUP BY r.name;
+ERROR:  syntax error at or near "(" at character 20
+STATEMENT:  SELECT r.name COUNT(r.name) FROM rankings r, students s WHERE r.id=s.school;
+ERROR:  column "num_students" does not exist at character 112
+STATEMENT:  SELECT r.name, COUNT(*) as num_students FROM rankings r, students s WHERE r.id=s.school GROUP BY r.name HAVING num_students =0;
+ERROR:  column "num_students" does not exist at character 93
+STATEMENT:  SELECT r.name, COUNT(*) as num_students FROM rankings r, students s WHERE r.id=s.school AND num_students=0 GROUP BY r.name;
+ERROR:  column "num_students" does not exist at character 112
+STATEMENT:  SELECT r.name, COUNT(*) as num_students FROM rankings r, students s WHERE r.id=s.school GROUP BY r.name HAVING num_students>2;
+ERROR:  syntax error at or near "(" at character 20
+STATEMENT:  SELECT r.name COUNT(*) FROM rankings r, students s WHERE r.id=s.school GROUP BY r.name;
+ERROR:  column "diff" does not exist at character 121
+STATEMENT:  SELECT R.id, R.name, R.public, ABS(R.instatetuition - R.outofstatetuition) AS diff FROM rankings R WHERE R.public=1 AND diff=10692;
+ERROR:  column "r.id" must appear in the GROUP BY clause or be used in an aggregate function at character 8
+STATEMENT:  SELECT *,MAX(ABS(R.instatetuition - R.outofstatetuition)) AS diff FROM rankings R WHERE R.public=1;
+ERROR:  column "r.name" must appear in the GROUP BY clause or be used in an aggregate function at character 8
+STATEMENT:  SELECT r.name FROM rankings R WHERE R.public=1 GROUP BY r.id HAVING ABS(R.instatetuition-R.outofstatetuition)=10692;
+ERROR:  column "r.instatetuition" must appear in the GROUP BY clause or be used in an aggregate function at character 75
+STATEMENT:  SELECT r.name FROM rankings R WHERE R.public=1 GROUP BY r.name HAVING ABS(R.instatetuition-R.outofstatetuition)=10692;
+ERROR:  column "r.instatetuition" must appear in the GROUP BY clause or be used in an aggregate function at character 75
+STATEMENT:  SELECT R.name FROM rankings R WHERE R.public=1 GROUP BY R.name HAVING ABS(R.instatetuition-R.outofstatetuition)=10692;
+ERROR:  syntax error at or near "SELECT" at character 112
+STATEMENT:  SELECT MAX(ABS(R.instatetuition - R.outofstatetuition)) AS diff FROM rankings R WHERE R.public=1 AND NOT EXIST(SELECT r.name, COUNT(*) as num_students FROM rankings r, students s WHERE r.id=s.school GROUP BY r.name;);
+ERROR:  syntax error at or near "SELECT" at character 112
+STATEMENT:  SELECT MAX(ABS(R.instatetuition - R.outofstatetuition)) AS diff FROM rankings R WHERE R.public=1 AND NOT EXIST(SELECT r.name, COUNT(*) as num_students FROM rankings r, students s WHERE r.id=s.school GROUP BY r.name);
+ERROR:  syntax error at or near "IN" at character 102
+STATEMENT:  SELECT MAX(ABS(R.instatetuition - R.outofstatetuition)) AS diff FROM rankings R WHERE R.public=1 AND IN (SELECT r.name, COUNT(*) FROM rankings r, students s WHERE r.id=s.school GROUP BY r.name);
+ERROR:  subquery has too many columns at character 109
+STATEMENT:  SELECT MAX(ABS(R.instatetuition - R.outofstatetuition)) AS diff FROM rankings R WHERE R.public=1 AND R.name IN (SELECT r.name, COUNT(*) FROM rankings r, students s WHERE r.id=s.school GROUP BY r.name);
+ERROR:  subquery must return only one column at character 111
+STATEMENT:  SELECT MAX(ABS(R.instatetuition - R.outofstatetuition)) AS diff FROM rankings R WHERE R.public=1 AND R.name = (SELECT r.name, COUNT(*) FROM rankings r, students s WHERE r.id=s.school GROUP BY r.name);
+ERROR:  subquery in FROM must have an alias at character 70
+HINT:  For example, FROM (SELECT ...) [AS] foo.
+STATEMENT:  SELECT MAX(ABS(R.instatetuition - R.outofstatetuition)) AS diff FROM (SELECT r.name, r.public, COUNT(*) FROM rankings r, students s WHERE r.id=s.school AND r.public=1 GROUP BY r.name);
+ERROR:  column "r.public" must appear in the GROUP BY clause or be used in an aggregate function at character 86
+STATEMENT:  SELECT MAX(ABS(R.instatetuition - R.outofstatetuition)) AS diff FROM (SELECT r.name, r.public, COUNT(*) FROM rankings r, students s WHERE r.id=s.school AND r.public=1 GROUP BY r.name) AS foo;
+ERROR:  missing FROM-clause entry for table "r" at character 16
+STATEMENT:  SELECT MAX(ABS(R.instatetuition - R.outofstatetuition)) AS diff FROM (SELECT r.name, r.public, COUNT(*) FROM rankings r, students s WHERE r.id=s.school AND r.public=1 GROUP BY r.name,r.public) AS foo;
+ERROR:  column foo.instatetuition does not exist at character 16
+STATEMENT:  SELECT MAX(ABS(foo.instatetuition - foo.outofstatetuition)) AS diff FROM (SELECT r.name, r.public, COUNT(*) FROM rankings r, students s WHERE r.id=s.school AND r.public=1 GROUP BY r.name,r.public) AS foo;
+ERROR:  column r.outstatetuition does not exist at character 106
+STATEMENT:  SELECT MAX(ABS(foo.instatetuition - foo.outofstatetuition)) AS diff FROM (SELECT r.name,r.instatetuition,r.outstatetuition, r.public FROM rankings r, students s WHERE r.id=s.school AND r.public=1) AS foo;
+ERROR:  column "r.id" must appear in the GROUP BY clause or be used in an aggregate function at character 8
+STATEMENT:  SELECT R.id, R.name FROM rankings R WHERE R.public=1 GROUP BY R.name,R.instatetuition,R.outofstatetuition HAVING ABS(R.instatetuition-R.outofstatetuition)=2763;
+ERROR:  column "r.id" must appear in the GROUP BY clause or be used in an aggregate function at character 8
+STATEMENT:  SELECT R.id, R.name FROM rankings R WHERE R.public=1 GROUP BY R.name,R.instatetuition,R.outofstatetuition HAVING ABS(R.instatetuition-R.outofstatetuition)=2763;
+FATAL:  could not open file "global/pg_database": No such file or directory
+LOG:  autovacuum launcher process (PID 10034) exited with exit code 1
+LOG:  terminating any other active server processes
+WARNING:  terminating connection because of crash of another server process
+DETAIL:  The postmaster has commanded this server process to roll back the current transaction and exit, because another server process exited abnormally and possibly corrupted shared memory.
+HINT:  In a moment you should be able to reconnect to the database and repeat your command.
+LOG:  could not open temporary statistics file "global/pgstat.tmp": No such file or directory
+LOG:  all server processes terminated; reinitializing
+LOG:  could not open file "postmaster.pid": No such file or directory
+PANIC:  could not open control file "global/pg_control": No such file or directory

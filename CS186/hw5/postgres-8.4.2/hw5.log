@@ -1,0 +1,54 @@
+LOG:  using buffer replacement policy: clock
+LOG:  database system was shut down at 2012-11-19 19:58:17 PST
+LOG:  database system is ready to accept connections
+LOG:  autovacuum launcher started
+LOG:  QUERY STATISTICS
+DETAIL:  ! system usage stats:
+	!	0.338896 elapsed 0.004000 user 0.044003 system sec
+	!	[0.004000 user 0.048003 sys total]
+	!	0/10416 [0/10600] filesystem blocks in/out
+	!	0/147 [0/800] page faults/reclaims, 0 [0] swaps
+	!	0 [0] signals rcvd, 0/0 [0/0] messages rcvd/sent
+	!	394/5 [394/10] voluntary/involuntary context switches
+	! buffer usage stats:
+	!	Shared blocks:         13 read,          0 written, buffer hit rate = 79.69%
+	!	Local  blocks:          0 read,          0 written, buffer hit rate = 0.00%
+	!	Direct blocks:          0 read,          0 written
+STATEMENT:  CREATE DATABASE nums;
+	
+LOG:  QUERY STATISTICS
+DETAIL:  ! system usage stats:
+	!	0.007646 elapsed 0.004000 user 0.004000 system sec
+	!	[0.004000 user 0.004000 sys total]
+	!	0/0 [0/0] filesystem blocks in/out
+	!	0/560 [0/1055] page faults/reclaims, 0 [0] swaps
+	!	0 [0] signals rcvd, 0/0 [0/0] messages rcvd/sent
+	!	0/2 [2/4] voluntary/involuntary context switches
+	! buffer usage stats:
+	!	Shared blocks:         49 read,          0 written, buffer hit rate = 93.36%
+	!	Local  blocks:          0 read,          0 written, buffer hit rate = 0.00%
+	!	Direct blocks:          0 read,          0 written
+STATEMENT:  SELECT n.nspname as "Schema",
+	  c.relname as "Name",
+	  CASE c.relkind WHEN 'r' THEN 'table' WHEN 'v' THEN 'view' WHEN 'i' THEN 'index' WHEN 'S' THEN 'sequence' WHEN 's' THEN 'special' END as "Type",
+	  pg_catalog.pg_get_userbyid(c.relowner) as "Owner"
+	FROM pg_catalog.pg_class c
+	     LEFT JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
+	WHERE c.relkind IN ('r','v','S','')
+	      AND n.nspname <> 'pg_catalog'
+	      AND n.nspname <> 'information_schema'
+	      AND n.nspname !~ '^pg_toast'
+	  AND pg_catalog.pg_table_is_visible(c.oid)
+	ORDER BY 1,2;
+LOG:  received smart shutdown request
+LOG:  autovacuum launcher shutting down
+LOG:  shutting down
+LOG:  database system is shut down
+LOG:  using buffer replacement policy: clock
+LOG:  database system was shut down at 2012-11-19 20:02:31 PST
+LOG:  database system is ready to accept connections
+LOG:  autovacuum launcher started
+LOG:  received smart shutdown request
+LOG:  autovacuum launcher shutting down
+LOG:  shutting down
+LOG:  database system is shut down

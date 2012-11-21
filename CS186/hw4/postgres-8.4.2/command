@@ -1,0 +1,5 @@
+1b. SELECT * FROM pg_indexes WHERE tablename='rankings';
+
+1d. SELECT n_distinct FROM pg_stats WHERE tablename='rankings' AND attname='state';
+
+1ef. SELECT COUNT(DISTINCT state) FROM rankings;

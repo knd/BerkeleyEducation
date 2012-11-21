@@ -67,23 +67,23 @@ The only way to see the app is to deploy it using [heroku](http://www.heroku.com
 In a fresh virtual machine, you will have to clone the git repo with all the files.
 
     % cd
-        % git clone git://github.com/cs186-fa12/fa12.git
+    % git clone git://github.com/cs186-fa12/fa12.git
 
-        If you have already cloned the repo before, you can run `git pull` to get the new files in the `hw2/` directory.
-        All the files relevant to this project will be in the `fa12/hw2/localee` directory.
+If you have already cloned the repo before, you can run `git pull` to get the new files in the `hw2/` directory.
+All the files relevant to this project will be in the `fa12/hw2/localee` directory.
 
 ###Running the app in a Virtual Machine
 Running the web app for the first is very simple within the virtual machine.  In the `fa12/hw2/localee` directory, simply run:
 
     % rails server
 
-    This will start the rails server and you can see the app running locally at: [http://localhost:3000](http://localhost:3000)
+This will start the rails server and you can see the app running locally at: [http://localhost:3000](http://localhost:3000)
 
-    The first time you run the server, you may be instructed to run:
+The first time you run the server, you may be instructed to run:
 
-        % bundle install
+    % bundle install
 
-        This will not work on the inst machines, so you must use heroku.
+This will not work on the inst machines, so you must use heroku.
 
 ###Running the app on Heroku
 **These instructions are only required if you are not using a virtual machine for the project. However, you may choose to run on heroku to be able to publicly access your implementation of loCALee.**
@@ -94,28 +94,28 @@ Then you have to login into heroku with the command:
 
     % heroku login
 
-    If you are running on an inst machine you must do the following steps (on a vm you can ignore this):
+If you are running on an inst machine you must do the following steps (on a vm you can ignore this):
 
-        % ssh-keygen -t rsa
-            % heroku keys:add
+    % ssh-keygen -t rsa
+    % heroku keys:add
 
-            Enter your login info when prompted (that you used to sign up at heroku.com) and respond 'yes' when it asks to create a public key.
+Enter your login info when prompted (that you used to sign up at heroku.com) and respond 'yes' when it asks to create a public key.
 
-            You can create a heroku app with:
+You can create a heroku app with:
 
-                % heroku create --stack cedar
-                    
-                    After the heroku app is created, you can start pushing new changes with:
+    % heroku create --stack cedar
+    
+After the heroku app is created, you can start pushing new changes with:
 
-                        % git add <the new files>
-                            % git commit -m "your commit message"
-                                % git push heroku master
-                                    
-                                    This will display what the url is for your app, so you can visit it with any browser.
+    % git add <the new files>
+    % git commit -m "your commit message"
+    % git push heroku master
+    
+This will display what the url is for your app, so you can visit it with any browser.
 
-                                    You may have to run the migration once to create the initial set of tables with the command:
+You may have to run the migration once to create the initial set of tables with the command:
 
-                                        % heroku run rake db:migrate
+    % heroku run rake db:migrate
 
 ####Sharing with Heroku
 If you would like to collaborate with your partner on the same heroku app, this is very straightforward.
@@ -123,15 +123,15 @@ Simply have one of you partners follow the steps above then do:
 
     % heroku sharing:add otherPartner@whatever.com
 
-    Then the otherPartner (after performing heroku login) can execute:
+Then the otherPartner (after performing heroku login) can execute:
 
-        % git clone -o heroku git@heroku.com:theirapp.git
+    % git clone -o heroku git@heroku.com:theirapp.git
 
-        theirapp is the name of the app you creating this will be the name that is something like "flying-dove-1234" or "shivering-pine-5678" something.
-        If you get a publickey error at that point execute the ssh-keygen and heroku keys:add steps described above.
+theirapp is the name of the app you creating this will be the name that is something like "flying-dove-1234" or "shivering-pine-5678" something.
+If you get a publickey error at that point execute the ssh-keygen and heroku keys:add steps described above.
 
-        And you will both have access to the app/git repo!!
-        If you would like more info check out: http://devcenter.heroku.com/articles/sharing
+And you will both have access to the app/git repo!!
+If you would like more info check out: http://devcenter.heroku.com/articles/sharing
 
 ##Rails Background
 
@@ -148,24 +148,24 @@ These are the specifications for the loCALee project:
 
 *  Users must create accounts to use loCALee
    *  Users must have unique emails
-      *  Users must have a name
-         *  Users must have a password
-            *  All the logging in/signing in and session management has already been implemented for you
-            *  Users can create locations
-               *  Locations must have a name
-                  *  Locations must also have GPS coordinates (latitude and longitude)
-                     *  The locations page show all the posts to that location, with the latest post first
-                     *  Users can create posts to locations
-                        *  A post is a piece of text the user creates for the particular location
-                           *  Posts are always associated with a single location
-                              *  Posts are always associated with the user who posted it
-                              *  Users can follow or unfollow locations
-                                 *  A user can only follow a location at most once
-                                    *  Following a location means the user sees all posts from that location in their stream
-                                       *  The user does not have to be following a location in order to create a post to that location
-                                          *  Users can follow 0 or more locations
-                                             *  Users' homepages show their stream of all the posts from all the locations they follow, with the latest post first
-                                                   * For example: if a user follows location A and location B, and A has 2 posts and B has 3 posts, their stream will show 5 posts, with the latest post first
+   *  Users must have a name
+   *  Users must have a password
+   *  All the logging in/signing in and session management has already been implemented for you
+*  Users can create locations
+   *  Locations must have a name
+   *  Locations must also have GPS coordinates (latitude and longitude)
+   *  The locations page show all the posts to that location, with the latest post first
+*  Users can create posts to locations
+   *  A post is a piece of text the user creates for the particular location
+   *  Posts are always associated with a single location
+   *  Posts are always associated with the user who posted it
+*  Users can follow or unfollow locations
+   *  A user can only follow a location at most once
+   *  Following a location means the user sees all posts from that location in their stream
+   *  The user does not have to be following a location in order to create a post to that location
+   *  Users can follow 0 or more locations
+   *  Users' homepages show their stream of all the posts from all the locations they follow, with the latest post first
+      * For example: if a user follows location A and location B, and A has 2 posts and B has 3 posts, their stream will show 5 posts, with the latest post first
 
 ##Part I: Database Schema Design (Rails Migrations and Models)
 Since you are an expert in ER models and schema design, your first task is to design the database for this project that will support all the functionality in the specifications above.
@@ -191,34 +191,34 @@ The methods you will need to implement are:
 
 *  `get_following_locations(user_id)`
    *  Returns all the locations being followed by the current user
-   *  `get_posts_for_location(location_id)`
-      *  Returns the location information and all posts for a given location
-      *  `get_stream_for_user(user_id)`
-         *  Returns the current user's stream of posts from all the locations the user follows
-         *  `get_nearby_locations(nelat, nelng, swlat, swlng, user_id)`
-            *  Retrieves the locations within a GPS bounding box
-            *  `create_location(location_hash)`
-               *  Creates a new location
-               *  `follow_location(user_id, location_id)`
-                  *  Makes the current user follow a location
-                  *  `unfollow_location(user_id, location_id)`
-                     *  Makes the current user unfollow a location
-                     *  `create_post(user_id, post_hash)`
-                        *  The current user creates a post for a location
-                        *  `create_user(user_hash={})`
-                           *  Creates a new user
-                           *  `get_all_posts`
-                              * Returns all the posts
-                              *  `get_all_users`
-                                 * Returns all the users
-                                 *  `get_all_locations`
-                                    * Returns all the locations
+*  `get_posts_for_location(location_id)`
+   *  Returns the location information and all posts for a given location
+*  `get_stream_for_user(user_id)`
+   *  Returns the current user's stream of posts from all the locations the user follows
+*  `get_nearby_locations(nelat, nelng, swlat, swlng, user_id)`
+   *  Retrieves the locations within a GPS bounding box
+*  `create_location(location_hash)`
+   *  Creates a new location
+*  `follow_location(user_id, location_id)`
+   *  Makes the current user follow a location
+*  `unfollow_location(user_id, location_id)`
+   *  Makes the current user unfollow a location
+*  `create_post(user_id, post_hash)`
+   *  The current user creates a post for a location
+*  `create_user(user_hash={})`
+   *  Creates a new user
+*  `get_all_posts`
+   * Returns all the posts
+*  `get_all_users`
+   * Returns all the users
+*  `get_all_locations`
+   * Returns all the locations
 
-                                    More detailed specifications are in the comments for each method.
-                                    In the comments, most of the return types will be array of hashes, or hashes.
-                                    The comments specify what the keys and values of the hashes should be.
-                                    For example, if it says a hash should include ":name - the name of the location", it means the key is `:name` and the value is the value of the name.
-                                    Therefore `h[:name]` will be the name of the location.
+More detailed specifications are in the comments for each method.
+In the comments, most of the return types will be array of hashes, or hashes.
+The comments specify what the keys and values of the hashes should be.
+For example, if it says a hash should include ":name - the name of the location", it means the key is `:name` and the value is the value of the name.
+Therefore `h[:name]` will be the name of the location.
 
 ####Running SQL Queries Directly on the Database
 
@@ -239,13 +239,13 @@ You can run those methods in the rails console:
 ```
 % rails console
   # create a new AppQuery instance
-  > aq = AppQuery.new
-   => #<AppQuery:0x000001047ba778> 
-     # now you can call any of those methods
-     > aq.get_stream_for_user(...)
-     ```
+> aq = AppQuery.new
+ => #<AppQuery:0x000001047ba778> 
+  # now you can call any of those methods
+> aq.get_stream_for_user(...)
+```
 
-     Use the console to make sure your implementation/schema prevents the database from being corrupted.
+Use the console to make sure your implementation/schema prevents the database from being corrupted.
 
 ####Generating Sample Data
 We have provide you with a simple script which generates data by using the methods in the file `app/controllers/app_query.rb`.
@@ -271,27 +271,27 @@ The methods you will have to implement are:
 
 *  `top_users_posts_sql`
   * Retrieve the top 5 users who created the most posts.
-    * Do not retrieve users who created 0 posts.
-      * Retrieve at most 5 rows.
-        * Returns a string of the SQL query.
-          * The resulting columns names must include (but are not limited to):
-               * `name` - name of the user
-                    * `num_posts` - number of posts the user has created
-                    *  `top_locations_unique_users_sql`
-                      * Retrieve the top 5 locations with the most unique posters. Only retrieve locations with at least 2 unique posters.
-                        * Retrieve at most 5 rows.
-                          * Returns a string of the SQL query.
-                            * The resulting columns names must include (but are not limited to):
-                                 * `name` - name of the location
-                                      * `num_users` - number of unique users who have posted to the location
-                                      *  `top_users_locations_sql`
-                                        * Retrieve the top 5 users who follow the most locations, where each location has at least 2 posts
-                                          * Do not retrieve users who follow 0 locations.
-                                            * Retrieve at most 5 rows.
-                                              * Returns a string of the SQL query.
-                                                * The resulting columns names must include (but are not limited to):
-                                                     * `name` - name of the user
-                                                          * `num_locations` - number of locations (has at least 2 posts) the user follows
+  * Do not retrieve users who created 0 posts.
+  * Retrieve at most 5 rows.
+  * Returns a string of the SQL query.
+  * The resulting columns names must include (but are not limited to):
+     * `name` - name of the user
+     * `num_posts` - number of posts the user has created
+*  `top_locations_unique_users_sql`
+  * Retrieve the top 5 locations with the most unique posters. Only retrieve locations with at least 2 unique posters.
+  * Retrieve at most 5 rows.
+  * Returns a string of the SQL query.
+  * The resulting columns names must include (but are not limited to):
+     * `name` - name of the location
+     * `num_users` - number of unique users who have posted to the location
+*  `top_users_locations_sql`
+  * Retrieve the top 5 users who follow the most locations, where each location has at least 2 posts
+  * Do not retrieve users who follow 0 locations.
+  * Retrieve at most 5 rows.
+  * Returns a string of the SQL query.
+  * The resulting columns names must include (but are not limited to):
+     * `name` - name of the user
+     * `num_locations` - number of locations (has at least 2 posts) the user follows
 
 ####Sample Results of generate_fake_data
 
@@ -340,41 +340,40 @@ To test it out (**this will delete all your data**):
 The files you need to submit are:
 *  hw2.tar
    *  This file has to be created in your virtual machine (or where you developed from), because that is where your implementation is.
-      *  To be extra nice to your GSI's, you can delete the `hw2/localee/tmp/` directory. =)
-         *  In the `fa12/hw2/` directory, run `tar -cvf hw2.tar localee` to generate the file.
-            *  It is good to check the tar file by simply extracting in some other location, and running the app.
-               *  You can transfer the file to the inst machines with `scp hw2.tar cs186-XX@hive1.cs.berkeley.edu:/path/to/where/you/want/the/file/`
-               *  README
-                  *  If you are using slip days, your README should contain a single digit indicating the number of slip days you wish to use.
-                        For example, if you wanted to use two slip days, the README would consist of only one line with the number: `2`
-                           *  If you are not using any slip days, the README should be empty.
-                           *  MY.PARTNERS
-                              *  This is auto-generated for you when you run the submit hw2 script.
+   *  To be extra nice to your GSI's, you can delete the `hw2/localee/tmp/` directory. =)
+   *  In the `fa12/hw2/` directory, run `tar -cvf hw2.tar localee` to generate the file.
+   *  It is good to check the tar file by simply extracting in some other location, and running the app.
+   *  You can transfer the file to the inst machines with `scp hw2.tar cs186-XX@hive1.cs.berkeley.edu:/path/to/where/you/want/the/file/`
+*  README
+   *  If you are using slip days, your README should contain a single digit indicating the number of slip days you wish to use.
+      For example, if you wanted to use two slip days, the README would consist of only one line with the number: `2`
+   *  If you are not using any slip days, the README should be empty.
+*  MY.PARTNERS
+   *  This is auto-generated for you when you run the submit hw2 script.
 
-                              **Note: The simplest way to create your submission is to create a directory on the inst machines, with just the files above.**
+**Note: The simplest way to create your submission is to create a directory on the inst machines, with just the files above.**
 
-                              On an inst machine, run `submit hw2`:
+On an inst machine, run `submit hw2`:
 
-                              ```
-                              % submit hw2
-                              Please enter the logins of your partner(s), if any.
-                              Enter '.' to stop.
-                              ...
-                              ...
-                              Created MY.PARTNERS file.
-                              Looking for files to turn in....
-                              Submitting hw2.tar.
-                              Submitting README.
-                              The files you have submitted are:
-                                  ./MY.PARTNERS ./README ./hw2.tar 
-                                  Is this correct? [yes/no] y
-                                  Copying submission of assignment hw2....
-                                  Submission complete.
+```
+% submit hw2
+Please enter the logins of your partner(s), if any.
+Enter '.' to stop.
+...
+...
+Created MY.PARTNERS file.
+Looking for files to turn in....
+Submitting hw2.tar.
+Submitting README.
+The files you have submitted are:
+    ./MY.PARTNERS ./README ./hw2.tar 
+Is this correct? [yes/no] y
+Copying submission of assignment hw2....
+Submission complete.
 
-                                  ```
+```
 
 
 
 ##Acknowledgements
 Special thanks to Denny Britz for teaching me Rails!
-
