@@ -1,7 +1,7 @@
 Processor Design
 ===============
 
-![processor]()
+![processor](https://github.com/knd/BerkeleyEducation/raw/master/CS61C/proj4/processor.png)
 
 Project Specification
 ----
