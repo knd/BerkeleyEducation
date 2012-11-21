@@ -1,7 +1,7 @@
 Nachos 
 =================================================
 
-![nachos](https://github.com/knd/BerkeleyEducation/raw/master/CS162/proj1/nachos.jpeg)
+![nachos](https://github.com/knd/BerkeleyEducation/raw/master/CS162/Nachos/nachos.jpeg)
 
 Project Specification
 ---
