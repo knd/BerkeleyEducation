@@ -7,3 +7,10 @@ Project Specification
 ------
 
 http://www-inst.eecs.berkeley.edu/~cs61a/fa11/projects/pig/pig.html
+
+How To
+---
+
+Run with:
+
+    python3 pig.py
