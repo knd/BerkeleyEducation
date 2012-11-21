@@ -1,7 +1,7 @@
 Twitter Trends
 =============
 
-![texas]()
+![texas](https://github.com/knd/BerkeleyEducation/raw/master/CS61A/proj2/texas.png)
 
 Project Specification
 ----
