@@ -1,7 +1,7 @@
 The Game of pig
 ==============
 
-![dice](https://www.github.com/knd/BerkeleyEducation/CS61A/proj1/raw/master/5.png)
+![dice](https://github.com/knd/BerkeleyEducation/raw/master/CS61A/proj1/5.png)
 
 ### Project Specification
 ------
