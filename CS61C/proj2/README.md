@@ -12,3 +12,10 @@ How To
 ---
 
 See spec for making test and run.
+Eg.
+
+    $ cd proj2
+    $ make
+    $ ./mips-sim mipscode/ackermann
+    A(3, 3) = 61
+    exiting the simulator
