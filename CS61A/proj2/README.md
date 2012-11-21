@@ -13,4 +13,4 @@ How To
 
 Run with:
 
-    python3 ants_gui.py
+    python3 trends.py
