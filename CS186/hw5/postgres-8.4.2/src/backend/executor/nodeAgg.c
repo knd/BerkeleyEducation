@@ -1401,6 +1401,10 @@ approx_agg_init(AggState *aggstate)
 	/*
 	 * CS186-TODO: allocate any structures inside of aggstate that you will need.
 	 */
+	aggstate->cm = init_sketch(agg->cm_width, agg->cm_depth);
+	aggstate->topK = palloc0(sizeof(ApproxTopEntry) * agg->approx_nkeep);
+	aggstate->size = 0;
+	aggstate->topKIterator = aggstate->topK;
 	
 	approx_agg_reset_iter(aggstate);
 
@@ -1462,7 +1466,73 @@ approx_agg_per_input(AggState *aggstate, TupleTableSlot* outerSlot, Agg* agg)
 	/*
 	 * CS186-TODO: Implement your function to process each input tuple.
 	 */
+	// get array of hashes, cm_depth of them
+	uint32 *hash_values = palloc0(sizeof(uint32) * agg->cm_depth);
+	getTupleHashBits(aggstate, outerSlot, hash_values, agg->cm_width, agg->cm_depth);
+	// increment the count for this item in the count-min sketch
+	increment_bits(aggstate->cm, hash_values);
+	// estimate the frequency of this item using the sketch
+	uint32 freq_item = estimate(aggstate->cm, hash_values);
 
+	// add freq_item to our data structure
+	bool hasItem = false;
+	ApproxTopEntry *temp;
+	int capacity = agg->approx_nkeep;
+	// check if item is in our data structure
+	//elog(LOG, "before checking item in our data structure");
+	for (temp = aggstate->topK; temp < aggstate->topK + aggstate->size; temp++) 
+	{
+		//elog(LOG, "check if item is in topK");
+		if (compare_tuple_with_approx_top_tuple(outerSlot, temp, aggstate, agg)) 
+		{
+			// update item in data structure
+			temp->freq = freq_item;		
+			hasItem = true;
+			break;
+		}
+	}
+	//elog(LOG, "testing");
+	// item not in our data structure yet
+	if (!hasItem) 
+	{
+		//elog(LOG, "item not in our data structure");
+		// if topK data structure is full
+		if (aggstate->size == capacity)  {
+			//elog(LOG, "topK is full");
+			// find the lowest freq and kick out
+			uint32 min_freq = aggstate->topK->freq; // first in topK
+			ApproxTopEntry *lowest_entry = aggstate->topK; // first in topK
+			for (temp = aggstate->topK; temp < aggstate->topK + aggstate->size; temp++) 
+			{
+				if (min_freq > temp->freq) 
+				{
+					min_freq = temp->freq;
+					lowest_entry = temp;
+				}
+			}
+			// if the min in our data structure is less than freq_item
+			// set the lowest entry in our data structure to item in outerSlot
+			if (min_freq < freq_item) 
+			{
+				set_approx_top_entry_from_slot(outerSlot, lowest_entry);
+				lowest_entry->freq = freq_item;
+			}
+			
+		}
+
+		// append to end
+		else 
+		{
+			temp = aggstate->topK + aggstate->size;
+			set_approx_top_entry_from_slot(outerSlot, temp);
+			temp->freq = freq_item;
+			aggstate->size += 1;
+			//elog(LOG, "append to topK");
+		}
+	}
+	//elog(LOG, "%d size of topK now", aggstate->size);
+
+	
 }
 
 
@@ -1476,6 +1546,8 @@ approx_agg_reset_iter(AggState *aggstate)
 	/*
 	 * CS186-TODO: Any code to reset the aggstate for your approx function should go here.
 	 */
+	aggstate->topKIterator = aggstate->topK;
+	
  	
 }
 
@@ -1541,7 +1613,7 @@ agg_retrieve_cmsketch(AggState *aggstate)
 		ExecStoreMinimalTuple(tuple->tuple, firstSlot, false);
 
 		old_cxt = MemoryContextSwitchTo(tmp_cxt);
-		aggvalues[0] = Int64GetDatum(0 /* CS186-TODO: Set the count for this group here */);
+		aggvalues[0] = Int64GetDatum(tuple->freq);
 
 		/* Our agg values are never null */
 		aggnulls[0] = false;
@@ -1581,7 +1653,14 @@ approx_agg_advance_iter(AggState *aggstate, Agg* agg)
 	 * CS186-TODO: You will need to implement this function to walk over
 	 * the data structure you have written to keep track of frequencies.
 	 */
-    return NULL;
+	ApproxTopEntry *end = aggstate->topK + aggstate->size;
+	if (end == aggstate->topKIterator) 
+	{
+		return NULL;
+	}
+	ApproxTopEntry *entry = aggstate->topKIterator;
+	aggstate->topKIterator++;
+    	return entry;
 }
 
 

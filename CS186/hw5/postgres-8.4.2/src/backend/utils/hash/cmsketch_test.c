@@ -19,7 +19,7 @@ int main(int argc, char* argv[]) {
 	uint32_t bits[3];
 	uint32_t bits1[3];
 	cmsketch* sketch = init_sketch(64, 3);
-
+	
 	/* add first value with 3 hash indices */
 	bits[0] = 1;
 	bits[1] = 29;

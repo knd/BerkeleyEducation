@@ -8,6 +8,9 @@
 
 typedef struct cmsketch {
    /* CS186-TODO: add fields here as you need them */
+	int width;
+	int depth;
+	int *counters;
 } cmsketch;
 
 /* initialize the count-min sketch for the specified width and depth */
