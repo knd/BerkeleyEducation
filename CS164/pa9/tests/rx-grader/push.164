@@ -1,0 +1,15 @@
+def output = ""
+
+def print_(x) {
+  output = output + x + " "
+}
+
+def testPush() {
+  def stream = Stream:new({})
+  stream:subscribe(print_)
+  stream:push("where")
+  stream:push("are")
+  stream:push("you")
+}
+
+testPush()

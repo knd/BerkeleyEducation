@@ -1,0 +1,10 @@
+def f(z) { 
+  yield(z)
+  print z
+}
+
+def z = 3
+def co = coroutine(f)
+resume(co, 5)
+print z
+resume(co, 4)

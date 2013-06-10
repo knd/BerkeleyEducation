@@ -1,0 +1,20 @@
+%ignore          /[ \n\t\v\f\r]+/ 
+ 
+%left '+' '-'
+%left '*' '/'
+%right '!'
+
+%%
+
+E 	->  E '+' E								%{ return ('+', n1.val, n3.val) %}
+   	| 	E '-' E								%{ return ('-', n1.val, n3.val) %}
+    | 	E '*' E								%{ return ('*', n1.val, n3.val) %}
+    | 	E '/' E								%{ return ('/', n1.val, n3.val) %}		
+    | 	'!' E								%{ return ('!', n2.val) %}
+    | 'if' E 'then' E           %dprec 1	%{ return ('if', n2.val, n4.val) %}
+    | 'if' E 'then' E 'else' E  %dprec 2	%{ return ('if', n2.val, n4.val, n6.val) %}
+    | Integer
+    ;
+ 
+ Integer 	-> 	/[0-9]+/ 					%{ return int(n1.val) %}
+ 		  	;

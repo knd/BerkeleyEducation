@@ -1,0 +1,12 @@
+def f(n) {
+    if (n < 10) {
+        1
+        print 2
+    } else {
+        def x = 0
+        x = 3
+    }
+}
+
+print f(0)
+print f(10)

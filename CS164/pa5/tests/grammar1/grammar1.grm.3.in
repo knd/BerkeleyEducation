@@ -1,0 +1,7 @@
+if 3 then 
+	if 4 then 
+		8 - 8 + 4
+	else
+		8 * 2 / 2
+else
+	1

@@ -1,0 +1,5 @@
+def f(x) {
+   def x = 1
+   x
+}
+print f(10)

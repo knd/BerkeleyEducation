@@ -1,0 +1,2 @@
+def x = lambda () { null }
+print x()

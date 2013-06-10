@@ -1,0 +1,6 @@
+<HBox>
+  <HBox background="#33ccff">Facebook</HBox>
+  <HBox>Facebook public posts.</HBox>
+  <VBox klass="stream"></VBox>
+  <Script ref="contest.164"></Script>
+</HBox>

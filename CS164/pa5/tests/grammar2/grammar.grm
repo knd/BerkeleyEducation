@@ -1,0 +1,21 @@
+%ignore          /[ \n\t\v\f\r]+/ 
+ 
+%left 'move' 'paint' 'animate'
+
+%%
+
+E 	->  'move' E 'to' Direction					%{ return ('move', n2.val, n4.val) %}
+    | 	Word
+    ;
+	
+Direction 	-> 	'LEFT'	Integer 			%{ return (n1.val,n2.val) %}
+			|	'RIGHT'	Integer				%{ return (n1.val,n2.val) %}
+			|	'DOWN'	Integer				%{ return (n1.val,n2.val) %}
+			| 	'UP'	Integer 			%{ return (n1.val,n2.val) %}
+			;
+			
+Integer		-> /[0-9]+/							%{ return int(n1.val) %}
+			;
+ 
+Word	 	-> 	/[a-zA-Z]+[a-zA-Z0-9]+/ 		%{ return str(n1.val) %}
+ 		  	;

@@ -1,0 +1,13 @@
+%ignore          /[ \t\v\f\r]+/
+
+%left '+' '-'
+
+
+%%
+
+E -> E '+' E          %{ return ['+', n1.val, n3.val] %}
+  |  E '-' E          %{ return ['-', n1.val, n3.val] %}
+  |  Integer
+  ;
+
+Integer -> /[0-9]+/   %{ return int(n1.val) %} ;

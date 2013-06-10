@@ -1,0 +1,26 @@
+print("Shout Stream loading....")
+
+def shoutUrl = "http://ws.audioscrobbler.com/2.0/?method=artist.getshouts&artist=The+xx&limit=5&api_key=d8becf3485865cce948b1888a9ae4b0a&format=json"
+def createShoutObservable(ev) { Stream.fromHttpRequest(shoutUrl):map(selectShouts) }
+def simplifyShout(shout) { {user=shout.author, text=shout.body} }
+def selectShouts(response) { response.shouts.shout }
+def sanitize(str) { native util.sanitize(str) }
+
+def timer = Stream.timer(10000)
+# 1.) Observable[Int]                     -> Observable[Observable[List[Shout]]]
+# 2.) Observable[Observable[List[Shout]]] -> Observable[List[Shout]]
+# 3.) Observable[List[Shout]]             -> Observable[Shout]
+# 4.) Observable[Shout]                   -> Observable[SimpleShout]
+def shouts = timer:observe(createShoutObservable):flatten():map(simplifyShout)
+
+# Append the shouts to the page.
+def streamElement = bq("stream")
+shouts:subscribe(lambda(shout) {
+  def shoutTml = "<VBox><HBox>From: " + shout.user + "</HBox>" + \
+      "<HBox>" + sanitize({message = shout.text}) + "</HBox></VBox>"
+  streamElement:append(shoutTml)
+  relayout()
+})
+
+# Pull in some shouts right now by firing the timer stream.
+timer:push(0)

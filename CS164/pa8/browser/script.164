@@ -1,0 +1,16 @@
+##
+# Script: The script tag that executes the code in attribute `ref`
+#
+
+def Script = Node:new({ \
+  isExec=False, \
+  ref="" \
+})
+
+Script.pass5_BindEventListeners = lambda(self) {
+  if (self.isExec==False) {
+    native runtime.evaluateScript({url=self.ref})
+    self.isExec = True
+    relayout()
+  }
+}

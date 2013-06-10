@@ -1,0 +1,20 @@
+%ignore          /[ \n\t\v\f\r]+/ 
+
+%left '/'
+
+%%
+
+Expr      -> Expr '/' Expr					%{ return ('div', n1.val, n3.val) %}
+          | Fraction						%{ return ('frac', n1.val) %}
+          | Unit							%{ return ('unit', n1.val) %}
+          ;
+
+Fraction  -> Number Number '/' Number     	%{ return (n1.val, n2.val, n4.val) %}
+          | Number                        	%{ return (n1.val) %}
+          ;
+
+Number    -> /[0-9]+/ 						%{ return int(n1.val) %}
+			;
+Unit      -> 'm' 					%{ return n1.val %}
+			| 's' 					%{ return n1.val %}
+			;

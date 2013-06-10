@@ -1,0 +1,5 @@
+def printOut(i) {
+    print i
+}
+
+ite(1, printOut(1), printOut(2))

@@ -1,0 +1,1 @@
+bq('src'):children():filter(lambda(n){'klass' in n && n.klass == 'left'}):background("cyan"):end():filter(lambda(n){'klass' in n && n.klass == 'right'}):background("pink")

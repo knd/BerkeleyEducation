@@ -1,0 +1,16 @@
+[(0, 6, 'OpenTag -> \\< Id Attributes \\>'),
+ (0, 9, 'Doc -> Tag'),
+ (0, 9, 'Tag -> OpenTag Content CloseTag'),
+ (1, 2, 'Id -> [a-zA-Z][a-zA-Z0-9:_-]*'),
+ (2, 2, 'Attributes -> '),
+ (2, 3, 'Id -> [a-zA-Z][a-zA-Z0-9:_-]*'),
+ (2, 5, 'Attribute -> Id \\= String'),
+ (2, 5, 'Attributes -> Attributes Attribute'),
+ (4,
+  5,
+  'String -> \\"(?:\\\\\\\\|\\\\\\"|\\\\\\r\\n|\\\\\\r|\\\\\\n|[^\\"\\r\\n])*\\"'),
+ (6, 6, 'Content -> Content Text'),
+ (6, 6, 'Text -> '),
+ (6, 9, 'CloseTag -> \\<\\/ Id \\>'),
+ (7, 8, 'Id -> [a-zA-Z][a-zA-Z0-9:_-]*')]
+Ambiguous, unresolved

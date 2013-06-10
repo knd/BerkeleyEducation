@@ -1,0 +1,19 @@
+def true = 1
+def false = 0
+def isEven(a) {
+    if (a == 0) {
+        true
+    } else {
+        isOdd(a - 1)
+    }
+}
+
+def isOdd(b) {
+    if (b == 0) {
+        false
+    } else {
+        isEven(b - 1)
+    }
+}
+
+print isEven(10)

@@ -1,0 +1,19 @@
+def iter(i) {
+    def n = 0
+    lambda () {
+        if (n < i) {
+            n = n +  1
+            n
+        } else {
+            null
+        }
+    }
+}
+
+def z = 0
+for (x in iter(10)) {
+    for (y in iter(10)) {
+        z = z + 1
+    }
+}
+print z

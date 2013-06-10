@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Semantic Value of ((hello|world*)regex|(test)**)*</title>
+    <link rel="stylesheet" type="text/css" href="results.css">
+    <script type="text/javascript" src="jquery-1.9.1.js"></script>
+  </head>
+  <body>
+    <h1>Semantic Value of ((hello|world*)regex|(test)**)*</h1>
+
+    <div id="input" class="container">
+      <h2>Input</h2>
+      <pre class="value">((hello|world*)regex|(test)**)*</pre>
+    </div>
+
+    <div id="output" class="container">
+      <h2>Output</h2>
+      <div class="value"><span class="id17"><span class="id15">(</span><span class="id16"><span class="id13"><span class="id5">(</span><span class="id6"><span class="id3">hello</span><span class="id4">|</span><span class="id3">worl<span class="id1">d</span><span class="id2">*</span><script>$(".id2").hover(function() {$(".id1").css("background", "cyan");},function() {$(".id1").css("background", "");});</script></span><script>$(".id4").hover(function() {$(".id3").css("background", "yellow");},function() {$(".id3").css("background", "");});</script></span><span class="id5">)</span><script>$(".id5").hover(function() {$(".id5").css("background", "lightgreen");},function() {$(".id5").css("background", "");});</script>regex</span><span class="id14">|</span><span class="id13"><span class="id11"><span class="id9"><span class="id7">(</span><span class="id8">test</span><span class="id7">)</span><script>$(".id7").hover(function() {$(".id7").css("background", "lightgreen");},function() {$(".id7").css("background", "");});</script></span><span class="id10">*</span><script>$(".id10").hover(function() {$(".id9").css("background", "cyan");},function() {$(".id9").css("background", "");});</script></span><span class="id12">*</span><script>$(".id12").hover(function() {$(".id11").css("background", "cyan");},function() {$(".id11").css("background", "");});</script></span><script>$(".id14").hover(function() {$(".id13").css("background", "yellow");},function() {$(".id13").css("background", "");});</script></span><span class="id15">)</span><script>$(".id15").hover(function() {$(".id15").css("background", "lightgreen");},function() {$(".id15").css("background", "");});</script></span><span class="id18">*</span><script>$(".id18").hover(function() {$(".id17").css("background", "cyan");},function() {$(".id17").css("background", "");});</script></div>
+    </div>
+
+    <div id="grammar" class="container">
+      <h2>Grammar</h2>
+      <pre class="value">%import util
+%ignore /\n+/
+
+%%
+
+R 	-&gt;	CHAR					%{ return n1.val %}
+						   
+  	| R '*'		%dprec 1		%{ subStrId = util.uniqueIdentifier(); starId = util.uniqueIdentifier(); return '&lt;span class=&quot;%(Rid)s&quot;&gt;%(Rval)s&lt;/span&gt;&lt;span class=&quot;%(id)s&quot;&gt;*&lt;/span&gt;&lt;script&gt;$(&quot;.%(id)s&quot;).hover(function() {$(&quot;.%(Rid)s&quot;).css(&quot;background&quot;, &quot;cyan&quot;);},function() {$(&quot;.%(Rid)s&quot;).css(&quot;background&quot;, &quot;&quot;);});&lt;/script&gt;' % { &quot;Rid&quot;: subStrId, &quot;id&quot;: starId, &quot;Rval&quot;: n1.val } %}
+	
+	| R R		%dprec 2		%{ return n1.val + n2.val %}
+						
+	| R '|' R	%dprec 3		%{ sideId = util.uniqueIdentifier(); barId = util.uniqueIdentifier(); return '&lt;span class=&quot;%(sideId)s&quot;&gt;%(LHS)s&lt;/span&gt;&lt;span class=&quot;%(id)s&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;%(sideId)s&quot;&gt;%(RHS)s&lt;/span&gt;&lt;script&gt;$(&quot;.%(id)s&quot;).hover(function() {$(&quot;.%(sideId)s&quot;).css(&quot;background&quot;, &quot;yellow&quot;);},function() {$(&quot;.%(sideId)s&quot;).css(&quot;background&quot;, &quot;&quot;);});&lt;/script&gt;' % { &quot;sideId&quot;: sideId, &quot;id&quot;: barId, &quot;LHS&quot;: n1.val, &quot;RHS&quot;: n3.val } %}
+						
+	| '(' R ')'					%{ id = util.uniqueIdentifier(); Rid = util.uniqueIdentifier(); return '&lt;span class=&quot;%(id)s&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;%(Rid)s&quot;&gt;%(Rval)s&lt;/span&gt;&lt;span class=&quot;%(id)s&quot;&gt;)&lt;/span&gt;&lt;script&gt;$(&quot;.%(id)s&quot;).hover(function() {$(&quot;.%(id)s&quot;).css(&quot;background&quot;, &quot;lightgreen&quot;);},function() {$(&quot;.%(id)s&quot;).css(&quot;background&quot;, &quot;&quot;);});&lt;/script&gt;' % { &quot;Rid&quot;: Rid, &quot;id&quot;: id, &quot;Rval&quot;: n2.val } %}
+	;
+
+CHAR -&gt; /[A-Za-z0-9]/ ;		</pre>
+    </div>
+
+    <div id="footer">Spring 2013 &bull; CS 164 &bull; UC Berkeley</div>
+  </body>
+</html>

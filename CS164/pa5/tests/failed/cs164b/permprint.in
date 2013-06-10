@@ -1,0 +1,50 @@
+def range(a,b) {
+  def i = a-1
+  lambda() {
+    i = i + 1
+    if(i < b) {
+      i
+    } else {
+      null
+    }
+  }
+}
+
+# print a list of strings as one string
+def print_strlist (lst) {
+  def str = ""
+  for (i in lst) {
+    str = str + i
+  }
+  print str
+}
+
+def swap(lst, i, j) {
+  def temp = lst[i]
+  lst[i] = lst[j]
+  lst[j] = temp
+}
+
+def permgen_helper(a, n) {
+  if (n <= 1) {
+    print_strlist(a)
+  } else {
+    for (i in range(0,n)) {
+      swap(a, i, n-1)
+      permgen_helper(a,n-1)
+      swap(a, i, n-1)
+    }
+  }
+}
+
+def permgen(a) {
+  permgen_helper(a, len(a))
+}
+
+def lst = {}
+lst[0] = 'a'
+lst[1] = 'b'
+lst[2] = 'c'
+lst[3] = 'd'
+permgen(lst)
+

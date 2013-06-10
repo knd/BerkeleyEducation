@@ -1,0 +1,14 @@
+def x = 100
+def f() {
+   x = x - 1
+   def f1() {
+     x = x - 2
+     def f2() {
+        x = x -3
+     }
+     f2()
+   }
+   f1()
+}
+f()
+print x

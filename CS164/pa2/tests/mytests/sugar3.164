@@ -1,0 +1,10 @@
+def i = 0
+def maxCount = 5
+while (i < maxCount) {
+    i = i + 1
+    def j = 0
+    while (j < (i + 1)) {
+        print j
+        j = j + 1
+    }
+}

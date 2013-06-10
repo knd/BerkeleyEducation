@@ -1,0 +1,10 @@
+def y = 1 + 2
+print y
+def add(x,y) {
+    def z = x+y
+    z
+}
+y = add(2,2)
+print y 
+y = lambda (a,b) {a * b}
+print y(2,3)

@@ -1,0 +1,10 @@
+[(0, 3, 'OpenTag -> \\< Id Attributes \\>'),
+ (0, 6, 'Doc -> Tag'),
+ (0, 6, 'Tag -> OpenTag Content CloseTag'),
+ (1, 2, 'Id -> [a-zA-Z][a-zA-Z0-9:_-]*'),
+ (2, 2, 'Attributes -> '),
+ (3, 3, 'Content -> Text'),
+ (3, 3, 'Text -> '),
+ (3, 6, 'CloseTag -> \\<\\/ Id \\>'),
+ (4, 5, 'Id -> [a-zA-Z][a-zA-Z0-9:_-]*')]
+Ambiguous, unresolved

@@ -1,0 +1,7 @@
+<HBox>
+  <HBox background="#33ccff">Last.fm Shout Stream</HBox>
+  <HBox>A simple little stream of the most recent shouts.</HBox>
+  <HBox klass="button">Click for Tweet</HBox>
+  <VBox klass="stream"></VBox>
+  <Script ref="tests/rx/lastfm_adv.164"></Script>
+</HBox>

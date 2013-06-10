@@ -1,0 +1,19 @@
+def iter(y) { 
+  yield(y)
+  if (y == 0) { 
+    0
+  } else { 
+    def x = y - 1
+    iter(x)
+  }
+}
+def getVal(y) { 
+  iter(y)
+  null
+}
+def y = 2
+def co = coroutine(getVal)
+print resume(co, y)
+print resume(co, y)
+print resume(co, y)
+print resume(co, y)

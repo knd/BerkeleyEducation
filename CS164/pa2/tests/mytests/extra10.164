@@ -1,0 +1,7 @@
+def x = 1
+def y = lambda () {
+    def x = 2
+    print x
+}
+print y()
+print x

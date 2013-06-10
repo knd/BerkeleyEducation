@@ -1,0 +1,13 @@
+%ignore          /[ \t\v\f\r\n]+/
+
+%%
+
+// A context-free language with balanced number of a's and b's.
+
+S -> A S B
+  | _ ;
+  
+A -> 'a' ;
+
+B -> 'b' ;
+

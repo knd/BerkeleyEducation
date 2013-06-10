@@ -1,0 +1,11 @@
+[(0, 1, 'Expr -> Unit'),
+ (0, 1, 'Unit -> m'),
+ (0, 3, 'Expr -> Expr \\/ Expr'),
+ (0, 5, 'Expr -> Expr \\/ Expr'),
+ (2, 3, 'Expr -> Unit'),
+ (2, 3, 'Unit -> s'),
+ (2, 5, 'Expr -> Expr \\/ Expr'),
+ (4, 5, 'Expr -> Fraction'),
+ (4, 5, 'Fraction -> Number'),
+ (4, 5, 'Number -> [0-9]+')]
+Yes

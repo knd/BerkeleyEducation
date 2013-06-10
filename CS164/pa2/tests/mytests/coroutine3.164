@@ -1,0 +1,9 @@
+def f(x) { 
+    def y = yield(x) 
+    x - y
+} 
+
+def co = coroutine(f)
+print resume(co, 1) 
+print resume(co, 2)
+print resume(co, 3) 

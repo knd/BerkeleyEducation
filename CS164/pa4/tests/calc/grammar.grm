@@ -1,0 +1,13 @@
+%ignore /[ \t\v\f\r\n]+/
+%%
+Expr      -> Expr '/' Expr
+          | Fraction
+          | Unit
+          ;
+
+Fraction  -> Number Number '/' Number     
+          | Number                        
+          ;
+
+Number    -> /[0-9]+/ ;
+Unit      -> 'm' | 's' ;

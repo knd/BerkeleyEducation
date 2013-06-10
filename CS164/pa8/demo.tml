@@ -1,0 +1,16 @@
+<VBox background="white">
+  <HBox klass="header" fontSize="14px" fontWeight="bold">
+    CHAT APP 
+  </HBox>
+  <HBox klass="message" background="gray" >
+      Message 1
+  </HBox>
+  <VBox fract="50">
+    <HBox topMargin="30" background="red">
+      Enter message here.
+    </HBox>
+    <HBox background="purple" fract="25" onclick="bq('message'):append('<HBox>Sent Message</HBox>'):background('green')">
+		Send
+    </HBox>
+  </VBox>
+</VBox>

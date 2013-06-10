@@ -1,0 +1,15 @@
+def x = 300
+
+def f1() {
+    def x = 100
+    x
+}
+
+def f2() {
+    def x = 200
+    x
+}
+
+print x
+print f1()
+print f2()

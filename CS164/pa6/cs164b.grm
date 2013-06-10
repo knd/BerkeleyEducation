@@ -1,0 +1,91 @@
+%ignore /[ \t\v\f]+/
+%ignore /\\\s*\n/
+%ignore /#.*/
+
+%left '||'
+%left '&&'
+%left '>' '<' '>=' '<='
+%left '==' '!='
+%left '+' '-'
+%left '*' '/'
+%%
+
+P       ->    Se                            %{ return n1.val %}  
+		;
+Se      -> 	  S                   %dprec 1  %{ return [n1.val] if n1.val else [] %}
+		| 	  Se /[;\r\n]+/ S     %dprec 2  %{ return n1.val + [n3.val] if n3.val else n1.val %}
+		;
+S       ->    _ 							%{ return None %}
+		|	  E                             %{ return ('exp', n1.val) %}
+        |     Id '=' E                      %{ return ('asgn', n1.val, n3.val) %}
+        |     'def' Id '=' E                %{ return ('def', n2.val, n4.val) %}
+        |     'def' Id '(' Ids ')' '{' Se '}'    %{ return ('def', n2.val, ('lambda', n4.val, n7.val)) %}
+        |     E '[' E ']' '=' E                  %{ return ('put', n1.val, n3.val, n6.val) %}
+        |     E '.' Id '=' E                     %{ return ('put', n1.val, ('string-lit', n3.val), n5.val) %}
+        |     'print' E                     %{ return ('print', n2.val) %}
+        |     'error' E                     %{ return ('error', n2.val) %}
+        |     'if' '(' E ')' '{' Se '}' 'else' '{' Se '}'    %{ return ('if', n3.val, n6.val, n10.val) %}
+        |     'if' '(' E ')' '{' Se '}'                		 %{ return ('if', n3.val, n6.val, None) %}
+        |     'while' '(' E ')' '{' Se '}'             %{ return ('while', n3.val, n6.val) %}
+        |     'for' '(' Id 'in' E ')' '{' Se '}'       %{ return ('for', n3.val, n5.val, n8.val) %} 
+		;
+E       ->    'null'                        %{ return ('null',) %}
+        |     Num                           %{ return ('int-lit', n1.val) %}
+        |     Id                            %{ return ('var', n1.val) %}
+        |     String                        %{ return ('string-lit', n1.val) %}
+        |     '{}'                          %{ return ('dict-lit', []) %}
+        |     '{' Ess '}'        			%{ return ('dict-lit', n2.val) %}
+        |     '(' E ')'                     %{ return n2.val %}
+        |     E '+' E        %dprec 2       %{ return ('+', n1.val, n3.val) %}
+        |     E '-' E        %dprec 2       %{ return ('-', n1.val, n3.val) %}
+        |     E '*' E        %dprec 2       %{ return ('*', n1.val, n3.val) %}
+        |     E '/' E        %dprec 2       %{ return ('/', n1.val, n3.val) %}
+        |     E '==' E       %dprec 2       %{ return ('==', n1.val, n3.val) %}
+        |     E '!=' E       %dprec 2       %{ return ('!=', n1.val, n3.val) %}
+        |     E '<=' E       %dprec 2       %{ return ('<=', n1.val, n3.val) %}
+        |     E '>=' E       %dprec 2       %{ return ('>=', n1.val, n3.val) %}
+        |     E '<' E        %dprec 2       %{ return ('<', n1.val, n3.val) %}
+        |     E '>' E        %dprec 2       %{ return ('>', n1.val, n3.val) %}
+        |     E '&&' E       %dprec 2       %{ return ('&&', n1.val, n3.val) %}
+        |     E '||' E       %dprec 2       %{ return ('||', n1.val, n3.val) %}
+        |     E 'in' E       %dprec 1       %{ return ('in', n1.val, n3.val) %}
+        |     E '[' E ']'    %dprec 1       %{ return ('get', n1.val, n3.val) %}
+        |     E '.' Id       %dprec 1       %{ 
+                                                x = n1.val
+                                                y = n3.val
+                                                check = ('in', ('string-lit', y), x)
+                                                first = ('get', n1.val, ('string-lit', n3.val))
+
+                                                table = ('get', x, ('string-lit', '__mt'))
+                                                index_lambda = ('get', table, ('string-lit', '__index'))
+                                                index = ('call', index_lambda, [('string-lit', n3.val), n1.val])
+                                                second = index
+
+                                                if_clause = ('if', check, [first], [second])
+                                                lambda_call = ('call', ('lambda', [], [if_clause]), [])
+                                                return lambda_call
+                                            %}
+        |     'len' '(' E ')'               %{ return ('len', n3.val) %}
+        |     '[' E 'for' Id 'in' E ']'     %{ return ('comprehension', n2.val, n4.val, n6.val) %}
+        |     'lambda' '(' Ids ')' '{' Se '}'    %{ return ('lambda', n3.val, n6.val) %}
+        |     E '(' Es ')'   %dprec 1       %{ return ('call', n1.val, n3.val) %}
+        |     'ite' '('E ',' E ',' E ')'    %{ return ('ite', n3.val, n5.val, n7.val) %}
+        |     'coroutine' '(' E ')'         %{ return ('coroutine', n3.val) %}
+        |     'resume' '(' E ',' E ')'      %{ return ('resume', n3.val, n5.val) %}
+        |     'yield' '(' E ')'             %{ return ('yield', n3.val) %}
+        |     'input()'                     %{ return ('input',) %}
+		;
+Ess		-> 	  Ess ',' Id '=' E     			%{ return n1.val + [(n3.val, n5.val)] %}
+        | 	  Id '=' E                      %{ return [(n1.val, n3.val)] %}
+        ;
+Es 		-> 	  Es ',' E      				%{ return n1.val + [n3.val] %}
+		| 	  E             				%{ return [n1.val] %}
+		| 	  _             				%{ return [] %}
+		;
+Ids		-> 	  Ids ',' Id					%{ return n1.val + [n3.val] %}
+		|	  Id							%{ return [n1.val] %}
+		|	  _                             %{ return [] %}
+		;
+Num     ->     /[0-9]+/                     %{ return int(n1.val) %} ;
+Id      ->     /[a-zA-Z_][a-zA-Z_0-9]*/     %{ return n1.val %} ;
+String  ->     /"[^"]*"|'[^']*'/            %{ return n1.val[1:(len(n1.val)-2)] %} ;

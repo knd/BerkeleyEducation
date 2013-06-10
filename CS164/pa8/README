@@ -1,0 +1,23 @@
+Please copy the following files from PA7:
+
+../pa7/browser/*.164
+../pa7/cs164c.grm
+../pa7/grammar_parser.py
+../pa7/grammar.py
+../pa7/interpreter.py
+../pa7/parser_generator.py
+../pa7/qtdom.py
+../pa7/runtime.py
+../pa7/tml.grm
+../pa7/tml.py
+../pa7/util.py
+
+The following files have fixes in this starter kit:
+
+library.164
+browser.py
+
+Please merge your library from ../pa7/library.164 with the new version, if you
+have customized it.
+
+IMPORTANT: DO NOT FORGET TO ADD THESE FILES TO THE REPO WITH HG ADD!

@@ -1,0 +1,10 @@
+// Ambiguous but buggy: "x," allowed
+%ignore          /[ \r\n]+/
+%%
+
+List -> _	       %{ return '' %}
+     |  List ',' List  %{ return '%s, %s' % (n1.val, n3.val) %}
+     |  Elem
+     ;
+
+Elem -> /[a-zA-Z0-9]+/ ;

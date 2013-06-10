@@ -1,0 +1,17 @@
+%import util
+%ignore /\n+/
+
+%%
+
+R 	->	CHAR					%{ return n1.val %}
+						   
+  	| R '*'		%dprec 1		%{ subStrId = util.uniqueIdentifier(); starId = util.uniqueIdentifier(); return '<span class="%(Rid)s">%(Rval)s</span><span class="%(id)s">*</span><script>$(".%(id)s").hover(function() {$(".%(Rid)s").css("background", "cyan");},function() {$(".%(Rid)s").css("background", "");});</script>' % { "Rid": subStrId, "id": starId, "Rval": n1.val } %}
+	
+	| R R		%dprec 2		%{ return n1.val + n2.val %}
+						
+	| R '|' R	%dprec 3		%{ sideId = util.uniqueIdentifier(); barId = util.uniqueIdentifier(); return '<span class="%(sideId)s">%(LHS)s</span><span class="%(id)s">|</span><span class="%(sideId)s">%(RHS)s</span><script>$(".%(id)s").hover(function() {$(".%(sideId)s").css("background", "yellow");},function() {$(".%(sideId)s").css("background", "");});</script>' % { "sideId": sideId, "id": barId, "LHS": n1.val, "RHS": n3.val } %}
+						
+	| '(' R ')'					%{ id = util.uniqueIdentifier(); Rid = util.uniqueIdentifier(); return '<span class="%(id)s">(</span><span class="%(Rid)s">%(Rval)s</span><span class="%(id)s">)</span><script>$(".%(id)s").hover(function() {$(".%(id)s").css("background", "lightgreen");},function() {$(".%(id)s").css("background", "");});</script>' % { "Rid": Rid, "id": id, "Rval": n2.val } %}
+	;
+
+CHAR -> /[A-Za-z0-9]/ ;		

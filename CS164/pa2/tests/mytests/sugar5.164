@@ -1,0 +1,10 @@
+def x = lambda () { print null }
+def y = lambda () { print 1 }
+
+def i = 0
+def maxCount = 5
+while (i < maxCount) {
+    i = i + 1
+    x()
+    y()
+}

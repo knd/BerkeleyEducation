@@ -1,0 +1,5 @@
+% classic grandparent query.
+parent(davidpham, khanhdao).
+parent(michaelluong, davidpham).
+gp(X,Y) :- parent(X,Z), parent(Z, WHO).
+gp(WHO, khanhdao)?

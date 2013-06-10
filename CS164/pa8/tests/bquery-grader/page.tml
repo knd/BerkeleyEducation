@@ -1,0 +1,20 @@
+<VBox klass="page" background="#DDE5FF">
+  <HBox klass="header" fontSize="14px" fontWeight="bold" background="orange">
+    BQuery test.
+    <VBox klass="inner" background="red">Yes!</VBox>
+    <VBox klass="inner" background="blue">No?</VBox>
+  </HBox>
+
+  <HBox klass="src" background="green">
+    <HBox klass="left" fract="20" background="white">Left Box!</HBox>
+    <HBox klass="right" fract="20" background="white">Right Box!</HBox>
+  </HBox>  
+
+  <VBox background="white" klass="output">
+    <HBox klass="something">
+      The output box:
+      <HBox>Hello</HBox>
+      <HBox>World</HBox>
+    </HBox>
+  </VBox>
+</VBox>

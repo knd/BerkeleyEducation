@@ -1,0 +1,71 @@
+%ignore /[ \n\r\t\v\f]+/
+%ignore /<!--(.|[\r\n])*?-->/
+
+%%
+
+Doc        ->  Tag                          
+           ;   
+                 
+Tag        ->  EmptyTag %{
+    node = dict(n1.val[1])
+    node['name'] = n1.val[0]
+    node['children'] = {}
+    return node
+%}
+           |   StartTag Content EndTag  %{
+    node = dict(n1.val[1])
+    node['name'] = n1.val[0]
+    node['children'] = dict(enumerate(n2.val)) if n2.val else {}
+    return node
+%}
+           ;  
+              
+Content    ->  _
+           |   ActContent
+           ;
+                
+ActContent ->  Tag               %dprec 2 %{ return [n1.val] %}
+           |   Text               %dprec 2
+           |   ActContent Tag       %dprec 1  %{ return n1.val + [n2.val] %}
+           |   ActContent Text       %dprec 1  %{ return n1.val + n2.val %}
+           ;
+                                   
+Tags       ->  Tag                          %{ return [n1.val] %}
+           |   Tags Tag                     %{ return n1.val + [n2.val] %}
+           ;                                
+                                            
+Text       ->  RawText                      %{  
+    node = dict(text=n1.val)
+    node['name'] = 'Word'
+    node['children'] = {}
+    return [node]  
+%}
+           ;                                
+                                            
+StartTag   ->  '<' Name Attributes '>'      %{ return (n2.val, n3.val) %}
+           ;                                
+EndTag     ->  '</' Name '>'                %{ return n2.val %}
+           ;                                
+EmptyTag   ->  '<' Name Attributes '/>'     %{ return (n2.val, n3.val) %}
+           ;                                
+                                            
+Attributes ->  _                            %{ return [] %}
+           |   Attributes Attribute         %{ return n1.val + [n2.val] %}
+           ;                                
+Attribute  ->  Name '=' String              %{ return (n1.val, n3.val[1:-1]) %}
+           ;
+           
+Name       -> /[a-zA-Z:_][a-zA-Z0-9:_.-]*/
+           ;
+RawText    -> Textlet                       %{ return n1.val %}
+           |  RawText Textlet               %{ return n1.val + ' ' + n2.val %}
+           ;
+Textlet    -> '='
+           |  '/'
+           |  '"'
+           |  Name
+           |  String
+           |  /[^\/<>=" \n\r\t\v\f]+/
+           ;
+String     -> /\"(?:\\\\|\\\"|\\\r\n|\\\r|\\\n|[^\"\r\n])*\"/   
+           ;

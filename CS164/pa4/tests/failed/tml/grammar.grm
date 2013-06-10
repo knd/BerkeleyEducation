@@ -1,0 +1,59 @@
+%ignore /[ \n\r\t\v\f]+/
+%ignore /<!--(.|[\r\n])*?-->/
+
+%%
+
+Doc        ->  Tag                          
+           ;                                
+                                            
+Tag        ->  Singleton                    
+           |   OpenTag Content CloseTag
+           ;  
+                                         
+Content    ->  Tags %dprec 2
+           |   Text %dprec 2                
+           |   Content Tags %dprec 1
+           |   Content Text %dprec 1
+           ;     
+                                         
+Tags       ->  Tag                         
+           |   Tags Tag                     
+           ;                                
+                                            
+Text       ->  _                            
+           |   RawText                     
+           ;                                
+                                            
+OpenTag    ->  '<' Id Attributes '>'        
+           ;   
+                                        
+CloseTag   ->  '</' Id '>'                  
+           ;
+                                           
+Singleton  ->  '<' Id Attributes '/>'      
+           ;                                
+                                            
+Attributes ->  _                            
+           //|   Attribute                    
+           |   Attributes Attribute         
+           ;        
+                                   
+Attribute  ->  Id '=' String                
+           ;
+           
+Id         -> /[a-zA-Z][a-zA-Z0-9:_-]*/     
+            ;
+RawText    -> Textlet                      
+           |  RawText Textlet               
+           ;
+           
+Textlet    -> '=' 
+           |  '/' 
+           | '"' 
+           |  Id  
+           |  String
+           |  /[^\/<>=" \n\r\t\v\f]+/
+           ;
+           
+String     -> /\"(?:\\\\|\\\"|\\\r\n|\\\r|\\\n|[^\"\r\n])*\"/   
+           ;

@@ -1,0 +1,97 @@
+%import ucalc_interpreter
+%ignore /[ \t\n\r]+/
+%left '+' '-'
+%left '*' '/'
+%left '^'
+%right '!'
+   
+%%
+S -> E            %{ r = ucalc_interpreter.eval(n1.val); return ('%s %s' % (r[0], ucalc_interpreter.formatUnit(r[1]))).strip() %}
+   | E 'in' C     %{ r = ucalc_interpreter.eval(('in', n1.val, n3.val)); return ('%s %s' % (r[0], ucalc_interpreter.formatUnit(r[1]))).strip() %}
+   ;
+
+% TODO: Handle addition, subtraction, multiplication, division (all three kinds). You have already most of it done from PA4/5. Copy it over.
+
+E -> NumLit    
+   | '-' E                  			%{ return -n2.val %}
+   | E '+' E                			%{ return ('+', n1.val, n3.val) %}
+   | E '-' E                			%{ return ('-', n1.val, n3.val) %}
+   | E '*' E                			%{ return ('*', n1.val, n3.val) %}
+   | E Div E                			%{ return ('/', n1.val, n3.val) %}
+   | E '^' E                			%{ return ('^', n1.val, n3.val) %}
+   | E C        	   %prec '*'   		%{ return ('*', n1.val, n2.val) %}
+   | E '!'                  			%{ return ('!', n1.val) %}
+   | '(' E ')'              			%{ return n2.val %}
+   | E '*' C                			%{ return ('*', n1.val, n3.val) %}
+   | E '/' C                			%{ return ('/', n1.val, n3.val) %}
+   ;
+
+C -> Unit Unit                          %{ return ('*', n1.val, n2.val) %}
+   | Unit '^' NumLit   %dprec 1         %{ return ('^', n1.val, n3.val) %}
+   | Unit '*' Unit     %dprec 2         %{ return ('*', n1.val, n3.val) %}
+   | Unit Div Unit     %dprec 2         %{ return ('/', n1.val, n3.val) %}
+   | Unit              %dprec 3
+   ;
+
+Div -> '/'
+    |  'per'		   %prec '/'
+    ;
+Unit -> Modifier Unit   %{ return ('*', n1.val, n2.val) %}
+     |  Distance 
+     |  Weight
+     |  Area
+     |  Time
+     |  Volume
+     |  Speed
+     |  Energy
+     |  Power
+     ;
+NumLit   -> Int | Float | Fractions | Dozens ;
+Int      -> /\d+/                 %{ return int(n1.val); %} ;
+Float    -> /\d+\.\d*|\d+|\.\d+/  %{ return float(n1.val); %} ;
+Fractions-> Int Int '/' Int       %{ return n1.val + float(n2.val)/n4.val %} ;
+Dozens   -> /dozen/               %{ return 12; %}
+	 |  /half (a )?dozen/	  %{ return 6; %}
+	 ;
+Modifier -> /half (a)?/           %{ return 0.5; %}
+         |  /quarter/             %{ return 0.25; %}
+         ;
+Distance -> 'm'
+          | 'mm'
+          | 'km'
+          | /feet|foot|ft/              %{ return 'ft' %}
+          | /in(ch(es)?)?/              %{ return 'inch' %}
+          | /smoot(s)?/			%{ return 'smoot' %}
+          | /mile(s)?/			%{ return 'mile' %}
+          | /ly|lightyear(s)?/		%{ return 'lightyear' %}
+          | /AU/
+          ;
+Weight   -> 'kg'
+	 | /g|gram(s)?/			%{ return 'gram' %}
+	 | /lb(s)?|pound(s)?/		%{ return 'lb' %}
+	 ;
+Area	 -> /acre(s)?/			%{ return 'acre' %}
+	 ;
+Time     -> /second(s)?|sec(s)?|s/	%{ return 's' %}
+         |  /min(ute(s)?)?/             %{ return 'min' %}
+         |  /hour(s)?|h/                %{ return 'hour' %}
+	 |  /day(s)?/			%{ return 'day' %}
+	 |  /year(s)?/			%{ return 'year' %}
+         ;
+Volume	 -> /(a)?[ ]+cup(s)?/		%{ return 'cup' %}
+	 |  /L|l|liter(s)?/		%{ return 'liter' %}
+	 |  /teaspoon(s)?/		%{ return 'teaspoon' %}
+	 |  /kilderkin(s)?/		%{ return 'kilderkin' %}
+	 |  /pint(s)?/			%{ return 'pint' %}
+	 |  /fl[ ]+oz/			%{ return 'floz' %}
+	 ;
+Speed    -> 'mph'
+	 |  'c'
+	 |  /knot(s)?/			%{ return 'knot'; %}
+	 ;
+Energy	 -> /J|(J|j)oule(s)?/		%{ return 'joule' %}
+	 |  /cal(orie(s)?)?/	        %{ return 'calorie' %}
+	 |  /Cal(orie(s)?)?/	        %{ return 'Calorie' %}
+	 ;
+Power	 -> /W(att(s)?)?/		%{ return 'watt' %}
+	 ;

@@ -1,0 +1,5 @@
+<tag1 attr1="val1 val1.1">
+	<tag2 attr2="val2" attr2_2="val2">
+		<tag3>  </tag3>
+	</tag2>
+</tag1>

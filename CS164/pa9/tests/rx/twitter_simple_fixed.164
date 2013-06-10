@@ -1,0 +1,28 @@
+print("Tweet Stream loading....")
+
+def tweetUrl = "http://api.twitter.com/1/statuses/user_timeline.json?screen_name=EGiNcontrol"
+def createTweetObservable(ev) { 
+    print "get event!"
+    Stream.fromHttpRequest(tweetUrl) }
+def simplifyTweet(tweet) { {user=tweet.user.name, text=tweet.text} }
+
+def timer = Stream.timer(1000)
+def tweets = Stream:new({})
+
+def streamElement = bq("stream")
+
+Stream.fromHttpRequest(tweetUrl):subscribe(lambda(x) {
+  def i = 0
+  while(i < len(x)) {
+    tweets:push(x[i])
+    i = i + 1
+  }
+})
+
+def timedTweets = tweets:zip(timer)
+timedTweets:subscribe(lambda(tweetAndTime) {
+  def tweet = tweetAndTime[0]
+  def tweetTml = "<HBox>" + tweet.text + "</HBox>"
+  streamElement:append(tweetTml) 
+  relayout()
+})

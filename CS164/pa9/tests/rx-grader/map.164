@@ -1,0 +1,17 @@
+def output = ""
+
+def print_(x) {
+  output = output + x + " "
+}
+
+def testMap() {
+  def original = Stream:new({})
+  def mapped = original:map(lambda(element) {
+    element + "!"
+  })
+  mapped:subscribe(print_)
+  original:push("hi")
+  original:push("bob")
+}
+
+testMap()

@@ -1,0 +1,51 @@
+%ignore          /[ \t\v\f\r\n]+/
+%ignore          /%.*/
+
+%left  '|'
+%left  ','
+
+%%
+
+S       -> R_list Query                 %{ return  (n1.val, n2.val)        %} ;
+
+R_list -> R_list Rule               %{ return n1.val + [n2.val]         %}
+        | Rule                      %{ return [n1.val]         %}
+        ;
+        
+Rule   -> Clause '.'                %{ return ('Axiom', n1.val)         %}
+        | Clause ':-' C_list '.'    %{ return ('Rule', n1.val, n3.val)   %}
+        ;
+
+Query   -> Clause '?'               %{ return n1.val %};
+
+C_list  -> C_list ',' AClause           %{ return n1.val + [n3.val]         %}
+        | AClause                   %{ return [n1.val]         %}
+        ;
+        
+AClause -> '~' Clause              %{ return ('Neg', n2.val)         %}
+         | Clause                   %{ return ('Pos', n1.val)         %}
+         ;
+         
+Clause  -> Lid '(' Terms ')'        %{ return ('Clause', n1.val, n3.val)         %} ;
+
+Terms    -> Terms ',' Term     %{ return n1.val + [n3.val]         %}
+        | Term               %{ return [n1.val]         %}
+        | _                 %{ return []         %}
+        ;
+        
+Term     -> '[' Term '|' Term ']'   %{ return ('Clause', 'Cons', [n2.val, n4.val])         %}
+         | '[' ']'                  %{ return ('Clause', 'Nil', [])         %}
+         | Clause                   %{ return n1.val                         %}
+         | Lit                     %{ return n1.val         %}
+         ;
+
+Lit     -> Var  %{ return ('Var', n1.val) %}
+        | Cst   %{ return ('Cst', n1.val) %}
+        ;
+     
+Var     -> /[A-Z][a-zA-Z_0-9]*/ %{ return n1.val %} ;
+
+Cst     -> /[a-z][a-z_0-9]*/ %{ return n1.val %}
+        |  /[0-9]+/          %{ return n1.val %} ;
+        
+Lid     -> /[a-z][a-z_0-9]*/ %{ return n1.val %} ;

@@ -1,0 +1,50 @@
+%ignore      	/[ \t\v\f\r\n]+/
+%ignore      	/%.*/
+
+%%
+
+S			->		Rules Query 
+			;
+
+Rules		->		Rules Rule
+			|		Rule
+			;
+			
+Rule		->		Goal '.'
+			|		Goal ':-' SubGoals '.'
+			;
+			
+SubGoals	->		SubGoals ',' G
+			|		G
+			;
+			
+G			-> 		'~' Goal
+			|		Goal
+			;
+		
+Goal		-> 		R '(' Args ')'
+			;
+			
+Query		-> 		Goal '?'
+			;
+			
+Args		-> 		A ',' A
+			|		A
+			;
+			
+A			->		'[' A '|' A ']'
+			|		'[' ']'
+			|		Goal
+			|		Value
+			|		Var
+			;
+			
+R			->		/[a-z][a-zA-Z0-9]*/
+			;
+
+Value		->		/[a-z][a-zA-Z0-9]*/
+			|		/[0-9]+/
+			;
+			
+Var			->		/[A-Z][a-zA-Z_0-9]*/
+			;

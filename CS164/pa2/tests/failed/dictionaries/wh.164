@@ -1,0 +1,32 @@
+def t = {};
+t[0] = {};
+t[0][0] = 'a';
+t[0][1] = 'b';
+t[1] = {};
+t[1][0] = 'c';
+t[1][1] = 'd';
+
+def f(v, d) {
+  if (d) {
+    f(v[0], d - 1);
+    f(v[1], d - 1);
+  } else {
+    yield(v);
+  }
+}
+
+def g(function, arg1, arg2) {
+  lambda(unused) {
+    function(arg1, arg2);
+  }
+}
+
+def i(c, p) {
+  lambda() {
+    resume(c, p);
+  }
+}
+
+for (x in ['0x' + x + 0 for x in i(coroutine(g(f, t, 2)), null)]) {
+  print x;
+};

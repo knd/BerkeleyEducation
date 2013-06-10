@@ -1,0 +1,277 @@
+def range(start, stop) {
+    def i = start
+    lambda() {
+        if(i < stop) {
+            def cur = i
+            i = i + 1
+            cur
+        } else {
+            null
+        }
+    }
+}
+
+def take_from(list, n) {
+    def res = {}
+    def i = 0
+    for (x in list) {
+        if (i >= n) {
+            append(res, x)
+        }
+        i = i + 1
+    }
+    res
+}
+
+def copy(list) {
+    def res = {}
+    for (x in list) {
+        append(res, x)
+    }
+    res
+}
+
+def wrap(lam, arg) {
+    def co = coroutine(lam)
+    lambda() { resume(co, arg) }
+}
+
+def isVar(t)  {
+    t.typ == 'var'    
+}
+
+def isCst(t)  {
+    t.typ == 'cst'    
+}
+
+def isClause(t)  {
+    t.typ == 'cls'    
+}
+
+
+def contains(term, var) {
+    def contains0(clause, var) {
+        def res = False
+        for (term in clause) {
+            res = res || contains(term, var)
+        }
+        res
+    }
+    
+    if (isCst(term)) {
+        False
+    } else { if (isVar(term)) {
+        term.name == var
+    } else { if (isClause(term)) {
+        contains0(term.ref, var)
+    } else {
+        error "contains: Unknown term type: " + term.typ 
+    }}}
+}
+
+def subst_term(term, slist) {
+    def newterm = {typ = term.typ}
+    if (isVar(term)) {
+        newterm.name = term.name
+        for (s in slist) {
+            if (s.from == term.name) {
+                newterm = s.to
+            }
+        }
+    } else { if (isClause(term)) {
+        newterm.ref = subst_clause(term.ref, slist)
+    } else { if (isCst(term)) {
+        newterm.name = term.name
+    } else {
+        error "subst0: Unknown term type: " + term.typ
+    }}}
+    newterm
+}
+
+def subst_clause(clause, slist) {
+    def newclause = {name = clause.name, negated = clause.negated}
+    for (i in range(0, len(clause))) {
+        newclause[i] = subst_term(clause[i], slist)
+    }
+    newclause
+}
+
+def subst(clauses, slist) {
+    def newclist = {}
+    for (c in clauses) {
+        def newc = subst_clause(c, slist)
+        append(newclist, newc)
+    }
+    newclist
+}
+
+def merge(mgu1, mgu2) {
+    if (mgu1 == null || mgu2 == null) {
+        null
+    } else {
+        def res = mgu1
+        for (x in mgu2) {
+            append(res, x)
+        }
+        res
+    }
+}
+
+def unify(clause1, clause2) {
+    if (clause1.name != clause2.name || len(clause1) != len(clause2)) {
+        null
+    } else {
+        def res = {}
+        def i = 0
+        while(i < len(clause1)) {
+            def term1 = subst_term(clause1[i], res)
+            def term2 = subst_term(clause2[i], res)
+            #print "Unifying " + term1 + " and " + term2
+            if (isCst(term1) && isCst(term2) && term1.name == term2.name) {
+                # Nothing to do here
+            } else { if (isVar(term1) && (not(contains(term2, term1.name)) || isVar(term2))) {
+                def s = {from = term1.name , to = subst_term(term2, res)}
+                append(res, s)
+            } else { if (isVar(term2) && (not(contains(term1, term2.name)) || isVar(term1))) {
+                def s = {from = term2.name, to = subst_term(term1, res)}
+                append(res, s)
+            } else { if (isClause(term1) && isClause(term2)) {
+                def innermgu = unify(term1.ref, term2.ref)
+                if (innermgu == null) {
+                    i = len(clause1)
+                    res = null
+                } else {
+                    merge(res, innermgu)
+                }
+            } else {
+                # No unifier
+                i = len(clause1)
+                res = null
+            }}}}
+            i = i + 1
+        }
+        res
+    }
+}
+
+def process(goal) {
+
+    # Returns null if a solution to the goal does indeed exist. If a solution
+    # doesn't exist, determine what value(s) this function may return while
+    # maintaining your program's overall correctness.
+    #
+    # goal - the goal for which to check whether a solution doesn't exist
+    #
+    def negation(goal) {
+        def newgoal = {name = goal.name, negated = False}
+        for (term in goal) {
+            append(newgoal, term)
+        }
+        if (resume(coroutine(process), newgoal) == null) {
+            yield({})
+        }
+        null
+
+        # [~7 lines]
+        # The documentation for this function explains the desired behavior.
+    }
+
+    # Returns an MGU that simultaneously satisfies all of the given clauses.
+    # If no solution exists, this function returns null.
+    #
+    # clauses - a list of clauses to satisfy. Variables in these clauses have
+    #           already been substituted with those in `mgus', where possible.
+    #    mgus - an MGU, possibly built up from several MGUs, that have been
+    #           applied to the clauses and is a subset of the MGU to return if
+    #           a solution exists
+    #   depth - the index of the clause to process
+    #
+    def conjunction(clauses, mgus, depth) {
+        def goal = clauses[depth]
+        def solutions = wrap(process, goal)
+        for (mgu in solutions) {
+            if (depth == len(clauses) - 1) {
+                yield(merge(mgu, mgus))
+            } else {
+                conjunction(subst(clauses, mgu), merge(mgu, mgus), depth + 1)
+            }
+        }
+        null
+
+        # [~10 lines]
+        # The current goal is the clause that we want to satisfy.
+
+        # Each MGU for the goal may be part of a larger solution, which also
+        # includes any other MGUs generated for this conjunction.
+
+        # If we have processed all of the clauses then we know a set of MGUs
+        # that simultaneously satisfy all of the clauses.
+
+        # Otherwise, we still need to ensure that the remaining clauses are
+        # satisfiable, given that we apply the recently generated MGU and
+        # include it as part of our larger potential solution.
+    }
+
+    #print "Goal: " + goal
+    if (goal.negated) {
+        negation(goal)
+    } else {
+        for (rule in prog) {
+            def mgu = unify(rule.head, goal)
+            if (mgu != null) {
+                if (rule.body == null) {
+                    yield(mgu)
+                } else {
+                    def partialMgus = wrap(lambda(_) {
+                      conjunction(subst(rule.body, mgu), {}, 0)
+                    }, null)
+                    for (m in partialMgus) {
+                      yield(merge(m, mgus))
+                    }
+                }
+            }
+        }
+        null
+    }
+
+    # [~15 lines]
+    # If the goal is negated, we want to see if no solution exists.
+
+    # Otherwise, we need to apply disjunction; is at least one rule (including
+    # axioms) satisfied?
+
+    # The list `prog' contains all of the rules and axioms of the program.
+
+    # As shown in lecture, we want to see if each rule's head can unify with
+    # our current goal.
+
+    # Unifications with axioms (body-less rules) provide a base case in that
+    # the MGU is a complete solution for the current goal.
+
+    # Otherwise, if our rule has a body, we must apply conjunction. This
+    # entails applying the MGU (a partial solution) to the clauses in the rule
+    # body and then seeing if a simultaneous solution exists for all of them. Be
+    # careful here -- once we substitute as many variables in the clause with
+    # those in the MGU as much as possible, the MGU in this scope is no longer
+    # relevant.
+
+    # If none of the rules' heads unify with the goal, then no solution exists.
+}
+
+
+# Main loop
+def co = coroutine(process)
+def i = 1
+print "Asking for solution " + i
+def s = resume(co, query)
+print "Answer: " + s
+
+while (s != null) {
+    i = i + 1
+    print "Asking for solution " + i
+    s = resume(co, query)
+    print "Answer: " + s
+}
+
+
+

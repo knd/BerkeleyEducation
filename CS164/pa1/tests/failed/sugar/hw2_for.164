@@ -1,0 +1,25 @@
+def iter() {
+     def i = 0
+     lambda () {
+         if (i < 10) {
+             i = i + 1
+             i 
+        } else {
+             null
+        }
+    } 
+} 
+
+
+def res0 = 0
+def res9 = 0
+
+for (x in iter()) {
+    if (x == 1) {
+        res0 = lambda() {x}
+    } else {
+        res9 = lambda() {x}
+    }
+}
+print res0()
+print res9()

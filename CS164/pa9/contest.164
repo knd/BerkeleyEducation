@@ -1,0 +1,26 @@
+print("Shout Stream loading....")
+
+def shoutUrl = "https://graph.facebook.com/search?q=watermelon&type=post"
+def createShoutObservable(ev) { Stream.fromHttpRequest(shoutUrl):map(selectShouts) }
+def simplifyShout(shout) { shout.data }
+def selectShouts(response) { response }
+def sanitize(str) { native util.sanitize(str) }
+
+def timer = Stream.timer(10000)
+# 1.) Observable[Int]                     -> Observable[Observable[List[Shout]]]
+# 2.) Observable[Observable[List[Shout]]] -> Observable[List[Shout]]
+# 3.) Observable[List[Shout]]             -> Observable[Shout]
+# 4.) Observable[Shout]                   -> Observable[SimpleShout]
+def shouts = timer:observe(createShoutObservable):flatten():map(simplifyShout)
+
+# Append the shouts to the page.
+def streamElement = bq("stream")
+shouts:subscribe(lambda(shout) {
+  def shoutTml = "<VBox><HBox>From: " + shout + "</HBox>" + \
+      "<HBox>" + sanitize({message = shout}) + "</HBox></VBox>"
+  streamElement:append(shoutTml)
+  relayout()
+})
+
+# Pull in some shouts right now by firing the timer stream.
+timer:push(0)

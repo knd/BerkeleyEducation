@@ -1,0 +1,13 @@
+def fib(a) {
+    if (a < 2) {
+       yield(1)
+    } else {
+      def co = coroutine(fib)
+      def a1 = resume(co, a-1)
+      co = coroutine(fib)
+      def a2 = resume(co, a-2)
+      yield(a2+a1)
+}}
+
+
+print resume(coroutine(fib), 7)

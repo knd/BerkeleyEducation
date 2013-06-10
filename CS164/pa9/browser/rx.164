@@ -1,0 +1,267 @@
+def Stream = Node:new({})
+
+
+
+##########################################
+# [void] stream:subscribe(fun)
+# 
+# Register fun as a callback.
+# Fun will be called on each element coming out of the stream.
+# It is possible to subscribe to a single stream multiple times.
+#
+Stream.subscribe = lambda (self, fun) {
+  # TODO: test this method
+  if (not("_subscribers" in self)) {
+    self._subscribers = {}
+  }
+  append(self._subscribers, fun)
+}
+
+
+##########################################
+# [void] stream:push(element)
+# 
+# Inject element into a stream, causing it to be emitted from the stream.
+# 
+Stream.push = lambda (self, element) {
+  # TODO: test this method
+  if ("_subscribers" in self) {
+    for (fun in self._subscribers) {
+      fun(element)
+    }
+  }
+}
+
+
+##########################################
+# [void] stream:pushMany(elist) 
+# 
+# Inject a list of elements individually into a stream.
+# 
+Stream.pushMany = lambda (self, elist) {
+  # TODO: PASS
+  for (element in elist) {
+    self.push(self, element)
+  }
+}
+
+
+##########################################
+# [Stream] stream:map(fun) 
+# 
+# Apply fun on every element.
+# The return value of this method is a new stream, 
+# whose emitted values are those of the original stream with fun applied on them.
+# 
+Stream.map = lambda (self, fun) {
+  # TODO: pass test but Stream:new({}) inheritance does not seem to work
+  def output = Stream:new({})
+  self.subscribe(self, lambda(element) { 
+    output.push(output, fun(element)) 
+  })
+  output
+}
+
+
+##########################################
+# [Stream] stream:observe(fun)    
+# 
+# Constructs a new stream, similar to map(),
+# except that the output of the mapper function should return an observable stream,
+# from which the first emitted element is pushed into the stream returned by this method.
+# 
+Stream.observe = lambda (self, fun) {
+  # TODO: test this method
+  def output = Stream:new({})
+  self.subscribe(self, lambda(element1) {
+    def stream = fun(element1)
+	stream.subscribe(stream, lambda(element2) {
+	  output.push(output, element2)
+	})
+  })
+  output
+}
+
+
+##########################################
+# [Stream] stream:flatten()    
+# 
+# Constructs a new stream from the stream stream.
+# You can assume that the stream stream emits iterables (e.g., lists).
+# flatten pushes the elements of these iterables into the returned stream.
+# 
+# type signature of flatten: Stream[Iterable[T]] -> Stream[T]
+#
+Stream.flatten = lambda (self) {
+  # TODO: test this method
+  def output = Stream:new({})
+  self.subscribe(self, lambda(elist) {
+    output.pushMany(output, elist)
+  })
+  output
+}
+
+
+##########################################
+# [Stream] stream:filter(fun) 
+# 
+# Filters a stream using predicate fun.
+# The return value of this method is a new stream
+# that only emits elements emitted by the original stream
+# and that pass the filter predicate (i.e., fun(element) is truthy).
+# 
+Stream.filter = lambda (self, fun) {
+  # TODO: test this method
+  def output = Stream:new({})
+  self.subscribe(self, lambda(element) {
+    if (fun(element)) {
+	  output.push(output, element)
+	}
+  })
+  output
+}
+
+
+##########################################
+# [void] stream:consume(stream0) 
+# 
+# Plugs stream0 into the current stream; every time a value is emitted from stream0,
+# the current stream should emit the value as well.
+# It is acceptable if this method returns the current stream in order to support call-chaining,
+# but note that this method injects the elements from stream0 into the current stream, 
+# rather than constructing a new stream.
+# This method is similar to multiplex, except that it modifies the current stream.
+#
+# def a = Stream:new({}); def b = Stream:new({});
+# a:consume(b); b:push(1)  # b will emit 1, and then a will emit 1. 
+#
+Stream.consume = lambda (self, stream0) {
+  # TODO: test this method
+  stream0.subscribe(stream0, lambda(element) {
+    self.push(self, element)
+  })
+}
+
+
+##########################################
+# [Stream] stream:multiplex(stream0)
+# 
+# Constructs and returns a new stream
+# that emits an element whenever the current stream or stream0 emits an element.
+#
+# def a = Stream:new({}); def b = Stream:new({}); def c = a:multiplex(b)
+# a:push(1) # a will emit 1, and then c will emit 1.
+#  
+# Works much like tee in a terminal (see man tee).
+# 
+Stream.multiplex = lambda (self, stream0) {
+  # TODO: test this method
+  def output = Stream:new({})
+  output.consume(output, self)
+  output.consume(output, stream0)
+  output
+}
+
+
+##########################################
+# [Stream] stream:zip(stream0) 
+# 
+# Merges two streams together.
+# The return value is a stream of pairs of elements,
+# each of which come from one of the two input streams.
+# Contrast this with multiplex, 
+# which emits an element whenever either of the two input streams does so.
+# On the other hand, zip only emits an element
+# after both the current stream and stream0 have each emitted an element.
+# 
+# def a = Stream:new({}); def b = Stream:new({}); def c = a:zip(b)
+# a:push(2); a:push(3) # a will emit 2 and 3, but c emits nothing so far.
+# b:push("x")          # b will emit "x", and c will emit a pair (2, "x").
+# b:push("y")          # b will emit "y" and c will emit the pair (3, "y").
+# 
+Stream.zip = lambda (self, stream0) {
+  # TODO: PASS 
+  def output = Stream:new({ _subscribers = {}})
+  def list_a = {}
+  def list_b = {}
+  self:subscribe(lambda(elem){
+    if (list_b == {}) { 
+	  append(list_a, elem) 
+	} else {
+	  def tmp = {} 
+	  append(tmp, elem)
+	  append(tmp, list_b[0])
+  	  output:push(tmp)
+  	  list_b = remove(list_b, list_b[0])
+  	  }
+  }) 
+  stream0:subscribe(lambda(elem){
+    if (list_a == {}) { 
+	  append(list_b, elem) 
+	} else {
+	  def tmp = {}
+	  append(tmp, list_a[0])
+	  append(tmp, elem)
+	  	  output:push(tmp)
+	  	  list_a = remove(list_a, list_a[0])
+	  	}
+	  })
+  output
+}
+
+
+
+##########################################
+# [Stream] Stream.timer(ms)   
+# 
+# A static factory method to construct a timer stream,
+# which asynchronously fires a timer event at the specified interval.
+# You can build this from window:setInterval(ms) in browser/window.164.
+#
+Stream.timer = lambda (ms) {
+  # TODO: implement this method
+  def output = Stream:new({})
+  window:setInterval(ms, lambda(x) {
+    output:push(x)
+  })
+  output
+}
+
+
+##########################################
+# [Stream] Stream.fromDOMEvent(node, event)  
+# 
+# A static factory method to construct a stream out of DOM events.
+# This is similar to node:pass5_BindEventListeners() in browser/node.164,
+# except that Stream.fromDOMEvent is not limited just to "onclick" event handlers.
+# You can build this from node:addProxyEventListener(event, callback, context) 
+# in browser/node.164.
+#
+Stream.fromDOMEvent = lambda (node, event) {
+  # TODO: test this method
+  def output = Stream:new({})
+  for (n in postorder(node)) {
+    n:addProxyEventListener(event, lambda(element) { output:push(element) }, node)
+  }
+  output
+}
+
+
+##########################################
+# [Stream] Stream.fromHttpRequest(url)    
+# 
+# A static factory method to construct a stream
+# that will emit the response from a remote HTTP server
+# when it asynchronously arrives some time in the future.
+# You can build this from window:http(url, callback) in browser/window.164.
+#
+Stream.fromHttpRequest = lambda (url) {
+  # TODO: test this method
+  def output = Stream:new({ _subscribers = {}})
+  window:http(url, lambda(res, x){
+    output:push(res['response'])
+  })
+  output
+
+}
+

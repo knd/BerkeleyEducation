@@ -1,0 +1,11 @@
+Copy the following files in this directory
+
+../pa2/interpreter.py
+../pa2/library.164
+../pa3/prolog.lua
+../pa5/grammar.py
+../pa5/grammar_parser.py
+../pa5/parser_generator.py
+../pa5/util.py
+
+You need to write the cs164 grammar (in cs164b.grm) before running your interpreter.

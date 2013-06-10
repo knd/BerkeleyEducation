@@ -1,0 +1,27 @@
+%ignore /[ \t\v\f]+/
+%ignore /\\\s*\n/
+%ignore /#.*/
+
+%%
+
+S -> NP VP 		%{ return 'answer(X) :- ' + n1.val + '(X), ' + n2.val + '.\n' %}
+  ;
+
+NP -> Det N		%{ return n2.val %}
+	;
+
+Det -> "what" 
+	| "which"
+	;
+	
+VP -> V N		%{ return n1.val + '(' + n2.val + ')' %}
+	;
+N -> "rock"      %{ return 'rock' %}
+  |  "specimen"  %{ return 'specimen' %}
+  |  "magnesium" %{ return 'magnesium' %}
+  |  "radiation" %{ return 'radiation' %}
+  |  "light"		 %{ return 'light' %}
+	;
+V -> "contains"  %{ return 'contains' %}
+  |  "emits" 	 %{ return 'emits' %}
+  ;

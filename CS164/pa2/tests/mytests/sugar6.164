@@ -1,0 +1,19 @@
+def iter() {
+    def x = 0
+    lambda() {
+      if (x < 3) {
+          x = x + 1
+          x
+      } else {
+          null
+      } 
+    }
+}
+def A = iter
+def B = iter
+for ( x in A()) {
+    for ( y in B()) {
+        print x
+        print y
+    }
+} 

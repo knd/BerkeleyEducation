@@ -1,0 +1,15 @@
+def Insect = {}
+Insect.__index = Insect
+Insect.numLegs = lambda(self) { 6 }
+
+def Spider = {}
+setmetatable(Spider, Insect)
+Spider.numLegs = lambda(self) { 8 }
+Spider.up = lambda(self) {
+  getmetatable(self).__index
+}
+
+print "Spider has: "
+print Spider:numLegs()
+print "Insect has: "
+print Spider:up().numLegs(Spider)

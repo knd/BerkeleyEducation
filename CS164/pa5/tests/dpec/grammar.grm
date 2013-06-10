@@ -1,0 +1,13 @@
+%ignore          /[ \t\v\f\r]+/
+%%
+
+// A regular expression grammar
+
+R ->  CHAR               %{ return n1.val %}
+  | R '*'      %dprec 1 %{ return ('*', n1.val) %}
+  | R R        %dprec 2 %{ return ('.', n1.val, n2.val) %}
+  | R '|' R    %dprec 3 %{ return ('|', n1.val, n3.val) %}
+  | '(' R ')'           %{ return n2.val %}
+  ;
+
+CHAR -> /[a-zA-Z0-9]/ ;

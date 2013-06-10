@@ -1,0 +1,17 @@
+def range(start, end, distance) {
+    def i = start
+    lambda () {
+        if (i < end) {
+            i = i + distance
+            i
+        } else {
+            null
+        }
+    }
+}
+
+for (x in range(0, 10, 2)) {
+    print x
+}
+
+

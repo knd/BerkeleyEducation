@@ -1,0 +1,1 @@
+bq('header'):children():filter(lambda(n){'background' in n && n.background == 'red'}):each(lambda(n){n.background='black'})

@@ -1,0 +1,237 @@
+def BQuery = Object:new({})
+
+##
+# bq(klass)
+# Return a selection which is a BQuery object containing all the elements
+# of the specified class. klass is a string
+#
+def bq (klass) {
+  def bqObj = BQuery:new({klass=klass})
+  bqObj.iter = lambda() {
+    def listOfElems = {}
+	for (n in preorder(window)) {
+	  if (("klass" in n) && (n.klass == klass)) {
+	    append(listOfElems, n)
+	  }
+	}
+	listOfElems
+  }
+  bqObj
+}
+
+##
+# each(fun)
+# Apply fun on all elements currently selected. fun is a function. 
+#
+BQuery.each = lambda (self, fun) {
+  for (elem in self.iter()) { fun(elem) }
+  self
+}
+
+##
+# append(content)
+# Insert content to the end of each element in the set of matched elements. 
+# content is a TML program encoded as a string.
+#
+BQuery.append = lambda (self, content) {
+  self.each(self, lambda (node) { 
+	def domTree = native runtime.parseTML({tml=content}) 
+	fixRawDOM(domTree) 
+    if (not("children" in node)) { 
+	  node.children = {} 
+	} 
+	append(node.children, domTree) 
+	domTree.parent = node 
+  })
+}
+
+##
+# background(color)
+# Change the background of the elements currently selected. color is a string.
+# 
+BQuery.background = lambda (self, color) {
+  self.each(self, lambda (node) { 
+	node.background = color 
+  })
+}
+
+## 
+# font(size)
+# Change the font size of the elements currently selected. 
+# size is a number encoded as a string.
+#
+BQuery.font = lambda (self, size) {
+  self.each(self, lambda (node) {
+    for (n in preorder(node)) {
+	  if (("name" in n) && (n.name == "Word")) { n.fontSize = size }
+	}
+  })
+}
+
+##
+# filter(fun)
+# Throw away all elements such that fun(element) is not True. fun is a function.
+#
+BQuery.filter = lambda (self, fun) {
+  def bqObj = BQuery:new({})
+  def iter = self.iter
+  bqObj.iter = lambda () {
+    def listOfElems = {}
+    for (elem in iter()) {
+      if (fun(elem)) { append(listOfElems, elem) }
+    }
+    listOfElems
+  }
+  bqObj.iterEnd = lambda () {
+    def listOfElems = {}
+	for (elem in iter()) { append(listOfElems, elem) }
+	listOfElems
+  }
+  bqObj
+}
+
+## 
+# map(fun)
+# Produce a new selection by applying fun on each elements of the current selection. 
+# fun is a function.
+#
+BQuery.map = lambda (self, fun) {
+  def bqObj = BQuery:new({})
+  def iter = self.iter
+  bqObj.iter = lambda () {
+    def listOfElems = {}
+	for (elem in iter()) {
+	  append(listOfElems, fun(elem))
+	}
+	listOfElems
+  }
+  bqObj
+}
+
+##
+# parent() 
+# Return a new selection consisting of the immediate parents of the currently selected elements.
+#
+BQuery.parent = lambda (self) {
+  def bqObj = BQuery:new({})
+  def iter = self.iter
+  bqObj.iter = lambda () {
+    def listOfElems = {}
+	for (elem in iter()) {
+	  if ("parent" in elem) { append(listOfElems, elem.parent) }
+	}
+	listOfElems
+  }
+  bqObj
+}
+
+##
+# clone()
+# Deep-copy every selected element.
+#
+BQuery.clone = lambda (self) {
+  # TODO: bugs here
+  def bqObj = BQuery:new({})
+  def iter = self.iter
+  bqObj.iter = lambda () {
+	def listOfElems = {}
+	for (elem in iter()) {
+	  append(listOfElems, elem:clone())
+	}
+	listOfElems
+  }
+  bqObj
+}
+
+##
+# appendTo(klass)
+# Insert every element currently selected to the end of the each element of class klass. 
+# klass is a string.
+#
+BQuery.appendTo = lambda (self, klass) {
+  # TODO: implement this method
+  self
+}
+
+##
+# children()
+# Return a new selection consisting of the immediate children of 
+# the currently selected elements.
+#
+BQuery.children = lambda (self) {
+  # TODO: bugs here
+  def bqObj = BQuery:new({})
+  def iter = self.iter
+  bqObj.iter = lambda () {
+    def listOfElems = {}
+	for (elem in iter()) {
+	  if ("children" in elem) {
+	    for (c in elem.children) {
+	      append(listOfElems, c)
+	    }
+	  }
+	}
+	listOfElems
+  }
+  bqObj
+}
+
+##
+# parents()
+# Return a new selection consisting of all the ancestors of the currently selected elements
+# not included the selected elements
+#
+BQuery.parents = lambda (self) {
+  def bqObj = BQuery:new({})
+  def iter = self.iter
+  bqObj.iter = lambda () {
+    def listOfElems = {}
+	for (elem in iter()) {
+	  appendAncestors(listOfElems, elem)
+	}
+	listOfElems
+  }
+  bqObj
+}
+
+##
+# first()
+# Return a new selection consisting of the first element in the current selection.
+#
+BQuery.first = lambda (self) {
+  def bqObj = BQuery:new({})
+  def iter = self.iter
+  bqObj.iter = lambda () {
+    def listOfElems = {}
+	append(listOfElems, iter()[0])
+	listOfElems
+  }
+  bqObj
+}
+
+##
+# click(code)
+# Replace the onclick handler of the node currently selected by code. 
+# Code is a 164 program encoded as a string.
+#
+BQuery.click = lambda (self, code) {
+  for (elem in self.iter()) {
+    elem.onclick = code
+  }
+  self
+}
+
+##
+# end()
+# Remove the most recent effect of filtering operation in the current chain 
+# and return the set of matched elements to its previous state. 
+# Only filter() is affected by end().  
+# In other words, only filter pushes a new list of elements onto the stack.
+#
+BQuery.end = lambda (self) {
+  self.iter = self.iterEnd
+  self
+}
+
+
+
