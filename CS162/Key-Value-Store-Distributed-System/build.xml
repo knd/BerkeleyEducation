@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="cs162-project3" default="main" basedir=".">
+	
+	<!-- Variable settings -->
+	<property name="src.dir" location="src" />
+	<property name="lib.dir" location="lib" />
+	<property name="build.dir" location="build" />
+	
+	<!-- Vairable settings for test -->
+	<property name="test.dir" location="src" />
+	<property name="test.report.dir" location="testReport" />
+	
+	<!-- Define the classpath which includes the junit.jar and classes after compiling -->
+	<path id="lib.class.path">
+		<pathelement location="lib/junit.jar" />
+		<pathelement location="${build.dir}" />
+	</path>
+
+	<!-- Deletes existing build, testReport directory -->
+	<target name="clean">
+		<delete dir="${build.dir}" />
+		<delete dir="${test.report.dir}" />
+	</target>
+	
+	<!-- Creates the build, testReport directory -->
+	<target name="makedir">
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${test.report.dir}" />
+	</target>
+	
+	<!-- Compiles the java code (including the usage of library for JUnit, EasyMock) -->
+	<target name="compile" depends="clean, makedir">
+		<javac srcdir="${src.dir}" destdir="${build.dir}" includeantruntime="false">
+			<classpath refid="lib.class.path" />
+		</javac>
+	</target>
+	
+	<!-- Run JUnit Tests -->
+	<target name="junit" depends="compile">
+		<junit printsummary="on" fork="true" haltonfailure="yes">
+			<classpath refid="lib.class.path" />
+			<formatter type="xml" />
+			<batchtest todir="${test.report.dir}">
+				<fileset dir="${src.dir}">
+					<include name="**/*Test*.java" />
+				</fileset>
+			</batchtest>
+		</junit>
+	</target>
+
+	<!-- Main target -->
+	<target name="main" depends="compile, junit">
+		<description>Main target</description>
+	</target>
+
+</project>
